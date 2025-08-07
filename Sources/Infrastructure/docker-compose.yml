@@ -1,0 +1,61 @@
+services:
+ keycloak:
+  image: docker.io/bitnami/keycloak
+  restart: always
+  env_file:
+   - ../../.env
+  volumes:
+   - keycloak_data:/bitnami/keycloak
+  depends_on:
+   - postgresql
+ minio:
+  image: docker.io/bitnami/minio
+  restart: always
+  env_file:
+   - ../../.env
+  volumes:
+   - minio_data:/bitnami/minio
+ postgresql:
+  image: docker.io/bitnami/postgresql
+  restart: always
+  env_file:
+   - ../../.env
+  volumes:
+   - postgresql_data:/bitnami/postgresql
+ mongo:
+  image: docker.io/bitnami/mongodb
+  platform: linux/amd64 # there is currently no arm64 image
+  restart: always
+  env_file:
+   - ../../.env
+  volumes:
+   - mongo_data:/data/db
+ backend:
+  restart: always
+  build:
+   dockerfile: Dockerfile
+   context: ../..
+   target: ${BACKEND_TARGET}
+  tty: ${BACKEND_TTY}
+  env_file:
+   - ../../.env
+  depends_on:
+   - keycloak
+   - minio
+   - postgresql
+   - mongo
+  #models:
+  #  - llama
+  volumes:
+   - backend_data:/data
+
+volumes:
+ postgresql_data:
+ minio_data:
+ mongo_data:
+ keycloak_data:
+ backend_data:
+
+models:
+  llama:
+    model: docker.io/ai/llama3.3:latest

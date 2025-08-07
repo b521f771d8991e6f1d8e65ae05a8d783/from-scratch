@@ -1,0 +1,6 @@
+[submodule "Dependencies/vcpkg"]
+	path = Dependencies/vcpkg
+	url = https://github.com/microsoft/vcpkg
+[submodule "Dependencies/base-tools"]
+	path = Dependencies/base-tools
+	url = https://github.com/b521f771d8991e6f1d8e65ae05a8d783/base-tools.git

@@ -1,0 +1,30 @@
+{
+	"extends": "expo/tsconfig.base",
+	"compilerOptions": {
+		"target": "ES5",
+		"lib": ["ES2024"],
+		"module": "ES2022",
+		"paths": {
+			"@/*": ["./*"]
+		},
+		/* Bundler mode */
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
+		"isolatedModules": true,
+		"moduleDetection": "force",
+		"noEmit": true,
+		/* Linting */
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedSideEffectImports": true
+	},
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		".expo/types/**/*.ts",
+		"expo-env.d.ts",
+		"nativewind-env.d.ts"
+	]
+}

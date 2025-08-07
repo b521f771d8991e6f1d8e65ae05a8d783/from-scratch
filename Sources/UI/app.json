@@ -1,0 +1,44 @@
+{
+	"expo": {
+		"name": "UI",
+		"slug": "UI",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/images/icon.svg",
+		"scheme": "webui",
+		"userInterfaceStyle": "automatic",
+		"newArchEnabled": true,
+		"ios": {
+			"supportsTablet": true
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/images/icon.svg",
+				"backgroundColor": "#ffffff"
+			},
+			"edgeToEdgeEnabled": true,
+			"package": "com.a832738292.UI"
+		},
+		"web": {
+			"bundler": "metro",
+			"output": "static",
+			"favicon": "./assets/images/icon.svg"
+		},
+		"plugins": [
+			"expo-router",
+			[
+				"expo-splash-screen",
+				{
+					"image": "./assets/images/icon.svg",
+					"imageWidth": 200,
+					"resizeMode": "contain",
+					"backgroundColor": "#ffffff"
+				}
+			],
+			"expo-localization"
+		],
+		"experiments": {
+			"typedRoutes": true
+		}
+	}
+}

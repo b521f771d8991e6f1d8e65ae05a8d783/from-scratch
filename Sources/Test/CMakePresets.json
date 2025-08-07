@@ -1,0 +1,33 @@
+{
+	"version": 3,
+	"configurePresets": [
+		{
+			"name": "debug",
+			"generator": "Ninja",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": true,
+				"CMAKE_C_FLAGS": "-Wall -pedantic -Werror",
+				"CMAKE_CXX_FLAGS": "-Wall -pedantic -Werror",
+				"CMAKE_C_EXTENSIONS": false,
+				"CMAKE_C_STANDARD": "23",
+				"CMAKE_CXX_EXTENSIONS": false,
+				"CMAKE_CXX_STANDARD": "20"
+			}
+		},
+		{
+			"name": "release",
+			"generator": "Ninja",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": true,
+				"CMAKE_C_FLAGS": "-Wall -pedantic -Werror",
+				"CMAKE_CXX_FLAGS": "-Wall -pedantic -Werror",
+				"CMAKE_C_EXTENSIONS": false,
+				"CMAKE_C_STANDARD": "23",
+				"CMAKE_CXX_EXTENSIONS": false,
+				"CMAKE_CXX_STANDARD": "20"
+			}
+		}
+	]
+}

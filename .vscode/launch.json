@@ -1,0 +1,22 @@
+{
+	"configurations": [
+		{
+			"type": "swift",
+			"request": "launch",
+			"args": [],
+			"cwd": "${workspaceFolder:from-scratch}",
+			"name": "Debug TestSwift",
+			"program": "${workspaceFolder:from-scratch}/.build/debug/TestSwift",
+			"preLaunchTask": "swift: Build Debug TestSwift"
+		},
+		{
+			"type": "swift",
+			"request": "launch",
+			"args": [],
+			"cwd": "${workspaceFolder:from-scratch}",
+			"name": "Release TestSwift",
+			"program": "${workspaceFolder:from-scratch}/.build/release/TestSwift",
+			"preLaunchTask": "swift: Build Release TestSwift"
+		}
+	]
+}

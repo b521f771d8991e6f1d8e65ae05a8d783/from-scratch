@@ -1,0 +1,40 @@
+{
+	"dockerComposeFile": [
+		"docker-compose.yml",
+		"../../Sources/Infrastructure/docker-compose.yml"
+	],
+	"service": "backend",
+	"workspaceFolder": "/workspace",
+	"mounts": [
+		"type=bind,source=${localWorkspaceFolder},target=/workspace,readonly",
+		// ssh and GPG setup
+		"type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,readonly",
+		"type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE}/.gnupg,target=/root/.gnupg",
+		// shell configuration & history
+		"type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE}/.zsh_history,target=/root/.zsh_history",
+		"type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE}/.zshrc,target=/root/.zshrc,readonly"
+	],
+	"containerEnv": {
+		"HOSTNAME": "devcontainer",
+		"PROMPT": "%F{cyan}%n@%m %F{yellow}%1~%f %F{green}%(!.#.$)%f "
+	},
+	"customizations": {
+		"vscode": {
+			"terminal.integrated.shell.linux": "/bin/zsh",
+			"extensions": [
+				"ms-azuretools.vscode-docker",
+				"streetsidesoftware.code-spell-checker",
+				"rust-lang.rust-analyzer",
+				"esbenp.prettier-vscode",
+				"dbaeumer.vscode-eslint",
+				"ms-vscode.cmake-tool",
+				"ms-vscode.makefile-tools",
+				"llvm-vs-code-extensions.vscode-clangd",
+				"esbenp.prettier-vscode",
+				"jock.svg",
+				"swiftlang.swift-vscode",
+				"bradlc.vscode-tailwindcss"
+			]
+		}
+	}
+}

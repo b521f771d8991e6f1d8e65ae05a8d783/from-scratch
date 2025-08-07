@@ -1,0 +1,15 @@
+/target
+/.build
+/.cmake
+/node_modules
+/generated
+/result
+/output
+/Sources/UI/.expo
+/Sources/UI/dist
+/Sources/UI/node_modules
+/Sources/UI/expo-env.d.ts
+# https://stackoverflow.com/questions/65754188/should-i-add-swiftpm-to-gitignore
+xcuserdata/
+.DS_Store
+/*.xcodeproj
