@@ -69,9 +69,10 @@ cmake-projects:
 	TARGET=${TARGET} VARIANT=${VARIANT} npx dotenvx run -- cmake -G ${CMAKE_BUILDER} -S . -B .cmake/root;
 	TARGET=${TARGET} VARIANT=${VARIANT} npx dotenvx run -- cmake --build .cmake/root;
 
+# apple clang does not have a webassembly target, so we need the one shipped by e.g. homebrew. Do not do this in other parts, because we do not need wasm there and want to use Apple Clang there.
 .PHONY: shared-frontend-and-backend-parts
 shared-frontend-and-backend-parts:
-	npx dotenvx run -- wasm-pack build --out-dir ../../generated/npm-pkgs/from-scratch Sources/Backend --mode no-install
+	PATH="/opt/homebrew/opt/llvm/bin:$PATH" npx dotenvx run -- wasm-pack build --out-dir ../../generated/npm-pkgs/from-scratch Sources/Backend --mode no-install
 
 .PHONY: frontend
 frontend: shared-frontend-and-backend-parts
@@ -140,14 +141,6 @@ frontend-dev:
 .PHONY: proxy
 proxy:
 	lighttpd -f Development/proxy.conf -D
-
-.PHONY: darwin-install
-darwin-install:
-	xcode-select --install
-	brew install npm rustup gpg clang-format
-	rustup default stable
-	rustup target add aarch64-apple-darwin x86_64-apple-darwin 
-	cargo install bacon wasm-pack wasm-bindgen-cli
 
 .PHONY: format
 format:
