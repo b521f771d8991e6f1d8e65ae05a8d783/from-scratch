@@ -72,7 +72,7 @@ cmake-projects:
 # apple clang does not have a webassembly target, so we need the one shipped by e.g. homebrew. Do not do this in other parts, because we do not need wasm there and want to use Apple Clang there.
 .PHONY: shared-frontend-and-backend-parts
 shared-frontend-and-backend-parts:
-	PATH="/opt/homebrew/opt/llvm/bin:$PATH" npx dotenvx run -- wasm-pack build --out-dir ../../generated/npm-pkgs/from-scratch Sources/Backend --mode no-install
+	PATH="/opt/homebrew/opt/llvm/bin:${PATH}" npx dotenvx run -- wasm-pack build --out-dir ../../generated/npm-pkgs/from-scratch Sources/Backend --mode no-install
 
 .PHONY: frontend
 frontend: shared-frontend-and-backend-parts

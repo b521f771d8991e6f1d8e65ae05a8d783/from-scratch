@@ -11,16 +11,19 @@ RUN make init
 
 FROM buildroot AS build-nix
 
+WORKDIR /buildroot
 RUN nix --extra-experimental-features 'nix-command flakes' build . -L --show-trace
 
 FROM --platform=x86_64 buildroot AS build-android
 
 ARG VARIANT=release
+WORKDIR /buildroot
 RUN VARIANT=${VARIANT} npx dotenvx run -- make android-apk
 
 FROM buildroot AS build
 
 ARG VARIANT=release
+WORKDIR /buildroot
 RUN VARIANT=${VARIANT} TARGET=$(rustc -Vv | grep host | awk '{print $2}' | sed 's/gnu/musl/') npx dotenvx run -- make rootfs test
 RUN chmod +x /buildroot/output/rootfs/bin/*
 WORKDIR /buildroot/output/rootfs/opt

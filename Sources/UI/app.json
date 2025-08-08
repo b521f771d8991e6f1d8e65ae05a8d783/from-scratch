@@ -4,7 +4,7 @@
 		"slug": "UI",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/images/icon.svg",
+		"icon": "./assets/images/logo.png",
 		"scheme": "webui",
 		"userInterfaceStyle": "automatic",
 		"newArchEnabled": true,
@@ -13,7 +13,7 @@
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/images/icon.svg",
+				"foregroundImage": "./assets/images/logo.png",
 				"backgroundColor": "#ffffff"
 			},
 			"edgeToEdgeEnabled": true,
@@ -22,14 +22,14 @@
 		"web": {
 			"bundler": "metro",
 			"output": "static",
-			"favicon": "./assets/images/icon.svg"
+			"favicon": "./assets/images/logo.png"
 		},
 		"plugins": [
 			"expo-router",
 			[
 				"expo-splash-screen",
 				{
-					"image": "./assets/images/icon.svg",
+					"image": "./assets/images/logo.png",
 					"imageWidth": 200,
 					"resizeMode": "contain",
 					"backgroundColor": "#ffffff"
