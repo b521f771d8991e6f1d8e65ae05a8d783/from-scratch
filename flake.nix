@@ -56,8 +56,8 @@
           environment = {
             VARIANT = "release";
 
-            CC = if pkgs.stdenv.isDarwin then "${pkgs.clang}/bin/clang" else "${pkgs.gcc}/bin/gcc";
-            CXX = if pkgs.stdenv.isDarwin then "${pkgs.clang}/bin/clang++" else "${pkgs.gcc}/bin/g++";
+            CC = "${pkgs.clang}/bin/clang";
+            CXX = "${pkgs.clang}/bin/clang++";
             OBJC = "${pkgs.clang}/bin/clang";
             OBJCXX = "${pkgs.clang}/bin/clang++";
 
