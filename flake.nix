@@ -2,9 +2,13 @@
 
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:b521f771d8991e6f1d8e65ae05a8d783/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
-    base-tools.url = "github:b521f771d8991e6f1d8e65ae05a8d783/base-tools";
+
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -12,7 +16,7 @@
       self,
       nixpkgs,
       flake-utils,
-      base-tools,
+      rust-overlay,
     }:
     flake-utils.lib.eachSystem
       [
@@ -27,9 +31,58 @@
           pkgs = import nixpkgs {
             inherit system;
             config.allowUnfree = false;
+            overlays = [ rust-overlay.overlays.default ];
           };
 
-          globalPackages = base-tools.outputs.global-packages."${system}";
+          rustToolchain = pkgs.rust-bin.stable.latest.default.override {
+            extensions = [ "rust-src" ];
+            targets = [
+              "x86_64-apple-darwin"
+              "aarch64-apple-darwin"
+              "x86_64-unknown-linux-musl"
+              "aarch64-unknown-linux-musl"
+              "x86_64-unknown-linux-gnu"
+              "aarch64-unknown-linux-gnu"
+              "wasm32-unknown-unknown"
+            ];
+          };
+
+          global-packages =
+            with pkgs;
+            [
+              zsh
+              git
+              gnumake
+              pkg-config
+              cmake
+              radicle-node
+              rpm
+              ninja
+              jq # tools
+              lld # (Objective) C/++ toolchain
+              rustToolchain
+              wasm-pack
+              wasm-bindgen-cli
+              bacon
+              swift
+              swiftpm
+              nodejs
+            ]
+            ++ lib.optionals pkgs.stdenv.isLinux [
+              gcc
+              gnustep-base
+              gnustep-gui
+              gnustep-make
+              gnustep-libobjc
+              dpkg
+              pkg-config
+              clang
+              clang-tools
+            ]
+            ++ lib.optionals stdenv.isDarwin [
+              libcxx
+              apple-sdk # clang is included here
+            ];
 
           npm-deps = pkgs.buildNpmPackage {
             # used only to create the node_modules folder
@@ -46,7 +99,7 @@
 
             installPhase = ''
               mkdir -p $out
-              cp -a node_modules $out
+              cp --no-preserve=mode,ownership -r node_modules $out
             '';
 
             fixupPhase = ":";
@@ -55,18 +108,22 @@
 
           environment = {
             VARIANT = "release";
-
-            CC = "${pkgs.clang}/bin/clang";
-            CXX = "${pkgs.clang}/bin/clang++";
-            OBJC = "${pkgs.clang}/bin/clang";
-            OBJCXX = "${pkgs.clang}/bin/clang++";
+            # use clang as much as possible
+            CC = if pkgs.stdenv.isLinux then "${pkgs.gcc}/bin/gcc" else "${pkgs.clang}/bin/clang";
+            CXX = if pkgs.stdenv.isLinux then "${pkgs.gcc}/bin/gcc" else "${pkgs.clang}/bin/clang++";
+            OBJC = if pkgs.stdenv.isLinux then "${pkgs.gcc}/bin/gcc" else "${pkgs.clang}/bin/clang";
+            OBJCXX = if pkgs.stdenv.isLinux then "${pkgs.gcc}/bin/gcc" else "${pkgs.clang}/bin/clang";
 
             OBJCFLAGS =
               if pkgs.stdenv.isLinux then
-                " -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include"
+                "-isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include"
               else
                 "";
-            OBJCXXFLAGS = backend.OBJCFLAGS;
+            OBJCXXFLAGS =
+              if pkgs.stdenv.isLinux then
+                "-isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include"
+              else
+                "";
             LDFLAGS =
               if pkgs.stdenv.isLinux then
                 "-L${pkgs.gnustep-gui}/lib -L${pkgs.gnustep-base.lib}/lib -L${pkgs.gnustep-libobjc}/lib -lgnustep-gui -lgnustep-base -lobjc -lm"
@@ -85,14 +142,12 @@
             };
 
             env = environment;
-
-            nativeBuildInputs = globalPackages;
-
+            nativeBuildInputs = global-packages;
             HOME = "./home";
 
             buildPhase = ''
               mkdir -p ${backend.HOME}            
-              cp -a ${npm-deps}/node_modules .
+              cp -r --no-preserve=mode,ownership ${npm-deps}/node_modules .
               chmod -R 777 node_modules # to prevent Error: EACCES: permission denied, mkdir '/build/s4bnqnz1prnhv383fpn2hqm29m7ifn3g-source/node_modules/react-native-css-interop/.cache'
               make rootfs
             '';
@@ -101,7 +156,7 @@
 
             installPhase = ''
               mkdir -p $out
-              cp -a output/rootfs/* $out
+              cp --no-preserve=mode,ownership -r output/rootfs/* $out
             '';
           };
         in
@@ -114,7 +169,7 @@
                 {
                   packages =
                     with pkgs;
-                    globalPackages
+                    global-packages
                     ++ [
                       prefetch-npm-deps
 
@@ -147,7 +202,6 @@
                       pkgs.projectcenter
                       pkgs.podman
                     ];
-
                   DONT_PROMPT_WSL_INSTALL = true; # to supress warnings issued by vscode on wsl
                 };
           };

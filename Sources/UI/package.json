@@ -8,7 +8,7 @@
 		"ios": "expo run:ios",
 		"web": "expo start --web",
 		"lint": "expo lint",
-		"build:web": "expo export --platform web && rm -rf ../../generated/web-dist && mkdir -p ../../generated/web-dist && cp -a dist ../../generated/web-dist/frontend",
+		"build:web": "expo export --platform web && rm -rf ../../generated/web-dist && mkdir -p ../../generated/web-dist && cp -r --no-preserve=mode,ownership dist ../../generated/web-dist/frontend",
 		"build:android:debug": "export NODE_ENV=development && npx expo prebuild -p android && cd android && ./gradlew assembleRelease",
 		"build:android:release": "export NODE_ENV=production && npx expo prebuild -p android && cd android && ./gradlew assembleRelease"
 	},
