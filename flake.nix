@@ -57,17 +57,17 @@
               cmake
               ninja
               jq # tools
-              clang
               clang-tools
               rustToolchain
               wasm-pack
               wasm-bindgen-cli
               bacon
-              swift
-              swiftpm
               nodejs
             ]
             ++ lib.optionals pkgs.stdenv.isLinux [
+              swift
+              swiftpm
+              clang
               rpm 
               gobjc
               gnustep-base-gcc
@@ -95,7 +95,7 @@
 
             installPhase = ''
               mkdir -p $out
-              cp --no-preserve=mode,ownership -r node_modules $out
+              cp -r node_modules $out
             '';
 
             fixupPhase = ":";
@@ -146,7 +146,7 @@
 
             buildPhase = ''
               mkdir -p ${backend.HOME}            
-              cp -r --no-preserve=mode,ownership ${npm-deps}/node_modules .
+              cp -r ${npm-deps}/node_modules .
               chmod -R 777 node_modules # to prevent Error: EACCES: permission denied, mkdir '/build/s4bnqnz1prnhv383fpn2hqm29m7ifn3g-source/node_modules/react-native-css-interop/.cache'
               make rootfs
             '';
@@ -155,7 +155,7 @@
 
             installPhase = ''
               mkdir -p $out
-              cp --no-preserve=mode,ownership -r output/rootfs/* $out
+              cp -r output/rootfs/* $out
             '';
           };
         in
