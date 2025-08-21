@@ -57,14 +57,14 @@
               cmake
               ninja
               jq # tools
-              lld # (Objective) C/++ toolchain
+              clang
               clang-tools
               rustToolchain
               wasm-pack
               wasm-bindgen-cli
               bacon
-              #swift
-              #swiftpm
+              swift
+              swiftpm
               nodejs
             ]
             ++ lib.optionals pkgs.stdenv.isLinux [
@@ -104,7 +104,6 @@
 
           environment = {
             VARIANT = "release";
-            # use clang as much as possible
             CC = if pkgs.stdenv.isLinux then "${pkgs.gobjc}/bin/gcc" else "${pkgs.clang}/bin/clang";
             CXX = if pkgs.stdenv.isLinux then "${pkgs.gobjc}/bin/g++" else "${pkgs.clang}/bin/clang++";
             OBJC = if pkgs.stdenv.isLinux then "${pkgs.gobjc}/bin/gcc" else "${pkgs.clang}/bin/clang";
