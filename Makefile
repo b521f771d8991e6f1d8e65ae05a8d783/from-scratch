@@ -15,7 +15,7 @@ CMAKE_DIRS := $(shell find $(SOURCES_DIR) -maxdepth 2 -type f -name 'CMakeLists.
 
 ifneq (, $(shell command -v gnustep-config))
 	# Store the new flags in temporary variables
-	TEMP_OBJCFLAGS := $(shell gnustep-config --gui-libs --objc-flags | sed 's/-fobjc-runtime=gnustep-2.2//; s/-fblocks//') \
+	TEMP_OBJCFLAGS := $(shell gnustep-config --gui-libs --objc-flags) \
 		-isystem/usr/include/x86_64-linux-gnu/GNUstep/ -isystem/usr/lib/gcc/x86_64-linux-gnu/14/include/ \
 		-isystem/usr/include/aarch64-linux-gnu/GNUstep/ -isystem/usr/lib/gcc/aarch64-linux-gnu/14/include/ \
 		-fconstant-string-class=NSConstantString
