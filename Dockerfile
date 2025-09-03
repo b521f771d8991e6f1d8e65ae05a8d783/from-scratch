@@ -19,7 +19,7 @@ FROM buildroot AS build
 
 ARG VARIANT=release
 WORKDIR /buildroot
-RUN VARIANT=${VARIANT} TARGET=$(python3 Development/get-host-target-triple.py | sed 's/gnu/musl/') npx dotenvx run -- make rootfs test
+RUN VARIANT=${VARIANT} TARGET=$(python3 Development/Scripts/get-host-target-triple.py | sed 's/gnu/musl/') npx dotenvx run -- make rootfs test
 RUN chmod +x /buildroot/output/rootfs/bin/*
 WORKDIR /buildroot/output/rootfs/opt
 # in its own stage so that it may be built in parallel

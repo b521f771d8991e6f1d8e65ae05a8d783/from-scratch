@@ -3,7 +3,7 @@
 .DEFAULT_GOAL := all
 VARIANT ?= debug
 SHELL := zsh
-TARGET ?= $(shell python3 Development/get-host-target-triple.py)
+TARGET ?= $(shell python3 Development/Scripts/get-host-target-triple.py)
 OUT_DIR ?= ./output
 
 SWIFT_SDK_CMD := --swift-sdk $(shell echo $(TARGET) | sed 's/unknown/swift/')
