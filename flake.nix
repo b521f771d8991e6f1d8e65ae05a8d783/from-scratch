@@ -63,6 +63,7 @@
               wasm-bindgen-cli
               bacon
               nodejs
+              python3
             ]
             ++ lib.optionals pkgs.stdenv.isLinux [
               swift
@@ -156,7 +157,20 @@
             installPhase = ''
               mkdir -p $out
               cp -r output/rootfs/* $out
+              chmod +x $out/bin/* #  TODO remove this hack
             '';
+          };
+
+          # https://nix.dev/tutorials/nixos/building-and-running-docker-images.html
+          # https://ryantm.github.io/nixpkgs/builders/images/dockertools/
+          # https://nixos.org/manual/nixpkgs/stable/#ssec-pkgs-dockerTools-buildLayeredImage-examples
+          docker-image = pkgs.dockerTools.buildLayeredImage {
+            name = backend.name;
+            contents = [ backend ];
+
+            config = {
+                Cmd = [ "${backend}/bin/backend" ];
+            };
           };
         in
         {
@@ -208,6 +222,7 @@
           packages = {
             backend = backend;
             default = backend;
+            docker-image = docker-image;
           };
 
           formatter = pkgs.nixfmt-tree;

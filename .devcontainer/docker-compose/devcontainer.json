@@ -6,6 +6,7 @@
 	"service": "backend",
 	"workspaceFolder": "/workspace",
 	"mounts": [
+		"type=bind,source=/nix,target=/nix,condition=linux",
 		"type=bind,source=${localWorkspaceFolder},target=/workspace,readonly",
 		// ssh and GPG setup
 		"type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,readonly",

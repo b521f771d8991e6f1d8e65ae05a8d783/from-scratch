@@ -3,7 +3,7 @@
 .DEFAULT_GOAL := all
 VARIANT ?= debug
 SHELL := zsh
-TARGET ?= $(shell rustc -vV | awk '/^host:/ {print $$2}')
+TARGET ?= $(shell python3 Development/get-host-target-triple.py)
 OUT_DIR ?= ./output
 
 SWIFT_SDK_CMD := --swift-sdk $(shell echo $(TARGET) | sed 's/unknown/swift/')
@@ -106,13 +106,14 @@ test:
 clean:
 	cargo clean
 	swift package clean
-	rm -rf .build .cmake target generated node_modules result output
+	npx shx rm -rf .build .cmake target generated node_modules result output
 
-.PHONY: linux-packages
-linux-packages: all
+.PHONY: installer
+installer: all
 	cd .cmake/root && npx dotenvx run -- cpack
-	mkdir -p ${OUT_DIR}
-	mv .cmake/root/$(shell basename $(CURDIR))* $(OUT_DIR)
+	npx shx rm -rf ${OUT_DIR}
+	npx shx mkdir -p ${OUT_DIR}
+	npx shx mv .cmake/root/$(shell basename $(CURDIR))* $(OUT_DIR)
 
 .PHONY: android-apk
 android-apk:
@@ -126,7 +127,7 @@ ios-ipa:
 	mkdir -p ${OUT}
 
 .PHONY: rootfs
-rootfs: linux-packages
+rootfs: installer
 	mkdir -p ${OUT_DIR}/rootfs
 	sh ${OUT_DIR}/*.sh -- --skip-license --prefix=${OUT_DIR}/rootfs
 
