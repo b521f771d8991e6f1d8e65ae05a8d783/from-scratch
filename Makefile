@@ -66,8 +66,8 @@ cmake-projects:
 
 	jq -s add .cmake/Sources/**/compile_commands.json > .cmake/compile_commands.json
 
-	TARGET=${TARGET} VARIANT=${VARIANT} npx dotenvx run -- cmake -G ${CMAKE_BUILDER} -S . -B .cmake/root;
-	TARGET=${TARGET} VARIANT=${VARIANT} npx dotenvx run -- cmake --build .cmake/root;
+	npx dotenvx run -- cmake -G ${CMAKE_BUILDER} -DTARGET=${TARGET} -DVARIANT=${VARIANT}  -S . -B .cmake/root;
+	npx dotenvx run -- cmake --build .cmake/root;
 
 # apple clang does not have a webassembly target, so we need the one shipped by e.g. homebrew. Do not do this in other parts, because we do not need wasm there and want to use Apple Clang there.
 .PHONY: shared-frontend-and-backend-parts
