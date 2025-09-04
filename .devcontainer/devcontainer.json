@@ -1,7 +1,7 @@
 {
   "build": {
 	"context": "..",
-    "dockerfile": "Dockerfile"
+    "dockerfile": "../Dockerfile"
   },
   "containerEnv": {
 		"HOSTNAME": "devcontainer",
