@@ -23,7 +23,7 @@ RUN VARIANT=${VARIANT} TARGET=$(python3 Development/Scripts/get-host-target-trip
 RUN chmod +x /buildroot/output/rootfs/bin/*
 WORKDIR /buildroot/output/rootfs/opt
 # in its own stage so that it may be built in parallel
-COPY --from=build-android /buildroot/output/app-release.apk .
+# COPY --from=build-android /buildroot/output/app-release.apk .
 
 FROM scratch AS run
 
