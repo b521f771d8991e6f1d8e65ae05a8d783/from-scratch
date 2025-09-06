@@ -65,16 +65,15 @@
               nodejs
               python3
             ]
-            ++ lib.optionals pkgs.stdenv.isLinux [
+            ++ lib.optionals pkgs.stdenv.isLinux [ 
+              # do not add rpm and dpkg here so that they are not built - we do not need them
               swift
               swiftpm
-              clang
-              rpm 
+              clang 
               gobjc
               gnustep-base-gcc
               gnustep-gui-gcc
               gnustep-make-gcc
-              dpkg
               pkg-config
             ]
             ++ lib.optionals stdenv.isDarwin [
