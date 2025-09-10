@@ -60,7 +60,7 @@
               clang-tools
               rustToolchain
               wasm-pack
-              wasm-bindgen-cli
+              wasm-bindgen-cli_0_2_100
               bacon
               nodejs
               python3

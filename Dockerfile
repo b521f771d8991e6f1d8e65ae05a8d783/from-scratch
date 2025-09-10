@@ -2,6 +2,7 @@ ARG TRIXIE_TOOLS_SRC=ghcr.io/b521f771d8991e6f1d8e65ae05a8d783/base-tools/debian-
 ARG TRIXIE_TOOLS_VERSION=main
 
 FROM ${TRIXIE_TOOLS_SRC}:${TRIXIE_TOOLS_VERSION} AS development
+RUN cargo install wasm-bindgen-cli@0.2.100
 
 FROM development AS buildroot
 
