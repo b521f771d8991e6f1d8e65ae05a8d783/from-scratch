@@ -229,7 +229,7 @@
           templates = {
             defaultTemplate = {
               path = ./.;
-              description = A simple, very opinionated template for all sorts of AI projects!";
+              description = "A simple, very opinionated template for all sorts of AI projects!";
               welcomeText = ''
                 # Getting Started
                 - run `nix develop` to enter the development environment
