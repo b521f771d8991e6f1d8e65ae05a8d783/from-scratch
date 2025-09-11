@@ -1,7 +1,6 @@
-ARG TRIXIE_TOOLS_SRC=ghcr.io/b521f771d8991e6f1d8e65ae05a8d783/base-tools/debian-tools
-ARG TRIXIE_TOOLS_VERSION=main
+ARG TRIXIE_TOOLS_SRC=ghcr.io/b521f771d8991e6f1d8e65ae05a8d783/base-tools/debian-tools:main
 
-FROM ${TRIXIE_TOOLS_SRC}:${TRIXIE_TOOLS_VERSION} AS development
+FROM ${TRIXIE_TOOLS_SRC} AS development
 RUN cargo install wasm-bindgen-cli@0.2.100
 
 FROM development AS buildroot
@@ -26,7 +25,7 @@ WORKDIR /buildroot/output/rootfs/opt
 # in its own stage so that it may be built in parallel
 # COPY --from=build-android /buildroot/output/app-release.apk .
 
-FROM scratch AS run
+FROM ghcr.io/b521f771d8991e6f1d8e65ae05a8d783/base-tools/debian-tools-runtime:main AS run
 
 WORKDIR / 
 COPY --from=build /buildroot/output/rootfs .
