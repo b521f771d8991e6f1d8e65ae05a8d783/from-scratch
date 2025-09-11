@@ -228,7 +228,7 @@
         }
       );
   
-  outputs.templates = {
+  templates = {
     defaultTemplate = {
       path = ./.;
       description = "A simple, very opinionated template for all sorts of AI projects!";
