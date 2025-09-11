@@ -225,6 +225,19 @@
           };
 
           formatter = pkgs.nixfmt-tree;
+
+          templates = {
+            defaultTemplate = {
+              path = ./.;
+              description = A simple, very opinionated template for all sorts of AI projects!";
+              welcomeText = ''
+                # Getting Started
+                - run `nix develop` to enter the development environment
+                - run `pnpm install` to install the packaged
+                - run `pnpm start` to open a live reloading website
+              '';
+            };
+          };
         }
       );
 }
