@@ -27,6 +27,8 @@ WORKDIR /buildroot/output/rootfs/opt
 
 FROM ghcr.io/b521f771d8991e6f1d8e65ae05a8d783/base-tools/debian-tools-runtime:main AS run
 
-WORKDIR / 
+ENV PATH="$PATH:/app/bin"
+
+WORKDIR /app
 COPY --from=build /buildroot/output/rootfs .
-CMD [ "/bin/from-scratch" ]
+CMD [ "/app/bin/from-scratch" ]
