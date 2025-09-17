@@ -4,18 +4,17 @@ A simple, very opinionated template for all sorts of AI projects!
 ## How to Develop?
 | Platform / Environment | Notes |
 |------------------------|-------|
-| **macOS / Darwin** 🍎 |  Choose either the traditional Makefile workflow or the reproducible Nix build system. |
-| Linux 🐧 | Use nix or, if you have set up your system correctly, the Makefile (not recommended) |
-| Windows / Linux / macOS |  Works on Windows, macOS, and Linux; the container provides a consistent Debian environment for development. |
+| **macOS / Darwin** 🍎 |  Choose either the traditional Makefile workflow or the reproducible Nix ❄️ build system. |
+| Windows / Linux / macOS |  Use the Devcontainer the container provides a consistent Debian environment for development. |
 
 ## How to get Artifacts?
 | Platform 🌐 | Build Method | Distribution Channel |
 |------------|--------------|----------------------|
 | **Android** 📱 | `make android‑apk` (Makefile) | **Google Play™**, F‑Droid |
-| **iOS / macOS** 🍎 | Nix Flake ❄️ **or** `make ios‑ipa` / `make macos` (Makefile) | **Apple App Store™** |
+| **iOS / macOS** 🍎 | Nix Flake ❄️ **or** `make ios‑ipa` / `make macos-dmg` (Makefile) | **Apple App Store™** |
 | **Windows** 🪟 | TPD | TBD |
-| **WebUI** 🌍 | Nix Flake ❄️ **or** Docker Image 🐋 | Docker Container |
-| **Linux Desktop** 🐧 | Nix (`nix copy` / `nix run`) **or** binary builds for your distro | Distribution’s package manager |
+| **WebUI** 🌍 | `nix run` ❄️ **or** Docker Image 🐋 | Docker Container |
+| **Linux Desktop** 🐧 | Nix (`nix copy` / `nix run`) **or** binary builds for your distro | `nix run` ❄️ **or** Distribution’s package manager |
 
 **Disclaimer:** *Google Play™* is a trademark of **Google LLC**. *Apple App Store™* is a trademark of **Apple Inc.**.
 
