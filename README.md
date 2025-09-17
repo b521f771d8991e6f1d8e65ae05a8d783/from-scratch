@@ -4,9 +4,9 @@ A simple, very opinionated template for all sorts of AI projects!
 ## How to develop?
 | OS | Development Options | Tools / Environment Provided |
 |----|----------------------|------------------------------|
-| **macOS** | Makefile workflow **or** `nix develop` **or** Devcontainer | • Native compilers/interpreters installed via Homebrew (e.g., clang, python, node) • Nix‑managed sandbox with exact dependency versions • Docker‑based Debian container (VS Code Remote‑Containers) |
-| **Linux** | `nix develop`  **or** Devcontainer | •Nix sandbox with reproducible toolchain • Docker‑based Debian container with all runtimes pre‑installed |
-| **Windows** | Devcontainer **or** Docker (or Docker Desktop) | runs a Debian container that includes compilers, interpreters, and any project‑specific utilities, giving a Linux‑like development environment without needing native Windows toolchains |
+| **macOS** | Makefile workflow **or** `nix develop` **or** Devcontainer | • Native compilers/interpreters installed via Homebrew (e.g., clang, python, node) <br>• Nix‑managed sandbox with exact dependency versions |
+| **Linux** | `nix develop`  **or** Devcontainer |  Docker‑based Debian container with all runtimes pre‑installed |
+| **Windows** | Devcontainer | runs a Debian container that includes compilers, interpreters, and any project‑specific utilities, giving a Linux‑like development environment without needing native Windows toolchains |
 
 ## How to get Artifacts?
 | Platform 🌐 | Build Method | Distribution Channel |
