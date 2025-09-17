@@ -142,51 +142,6 @@
           };
         in
         {
-          devShells = {
-            default =
-              pkgs.mkShell.override
-                {
-                }
-                {
-                  packages =
-                    with pkgs;
-                    global-packages
-                    ++ [
-                      prefetch-npm-deps
-
-                      (vscode-with-extensions.override {
-                        vscode = vscodium;
-                        vscodeExtensions =
-                          with vscode-extensions;
-                          [
-                            bbenoist.nix
-                            streetsidesoftware.code-spell-checker
-                            vscode-extensions.rust-lang.rust-analyzer
-                            vscode-extensions.dbaeumer.vscode-eslint
-                            vscode-extensions.esbenp.prettier-vscode
-                            vscode-extensions.rust-lang.rust-analyzer
-                            vscode-extensions.ms-azuretools.vscode-docker
-                            vscode-extensions.ms-vscode.makefile-tools
-                            vscode-extensions.sswg.swift-lang
-                          ]
-                          ++ vscode-utils.extensionsFromVscodeMarketplace [
-                            # {
-                            #   name = "swift-lang";
-                            #   publisher = "sswg";
-                            #   version = "1.10.4";
-                            #   sha256 = "sha256-5NrWBuaNdDNF0ON0HUwdwPFsRO3Hfe0UW4AooJbjiA0=";
-                            # }
-                          ];
-                      })
-                    ]
-                    ++ lib.optionals stdenv.isLinux [
-                      pkgs.projectcenter
-                      pkgs.podman
-                    ];
-                  DONT_PROMPT_WSL_INSTALL = true; # to supress warnings issued by vscode on wsl
-                };
-          };
-
           packages = {
             backend = backend;
             default = backend;
