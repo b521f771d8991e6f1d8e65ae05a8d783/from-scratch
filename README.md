@@ -2,9 +2,16 @@
 A simple, very opinionated template for all sorts of AI projects!
 
 ## Works on
-macOS/Darwin: in nix, outside of nix
-Debian: in nix, outside of nix
-Devcontainer: using debian
+ - macOS/Darwin: in nix, outside of nix
+ - Devcontainer: using debian
+ - locally via the Makefile
+
+## Artifacts:
+ - Android App, via the Makefile (make android-apk)
+ - iOS App, built via the Makefile (make ios-ipa)
+ - WebUI, built either via:
+  - Nix Flake
+  - Docker Image
 
 ## Features
 * React Native with Expo: create simple frontend that work on iOS, Android and on the Web
