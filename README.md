@@ -1,20 +1,22 @@
 # from-scratch
 A simple, very opinionated template for all sorts of AI projects!
 
-## Compiles on
- - macOS/Darwin: in nix, outside of nix
- - Devcontainer: using debian
- - locally via the Makefile
+## How to Develop?
+| Platform / Environment | Notes |
+|------------------------|-------|
+| **macOS / Darwin** 🍎 |  Choose either the traditional Makefile workflow or the reproducible Nix build system. |
+| **Devcontainer (Debian base)** 🐳 |  Works on Windows, macOS, and Linux; the container provides a consistent Debian environment for development. |
 
 ## How to get Artifacts?
-| Platform | Build Method | Distribution Channel |
-|----------|--------------|----------------------|
-| Android App | `make android-apk` (Makefile) | App Store, F‑Droid |
-| iOS / macOS App | Nix Flake ❄️ **or** `make ios-ipa` (Makefile) | `nix run` **or** App Store 🍎 |
-| WebUI | Nix Flake ❄️ **or** Docker Image |`nix run` **or**  Docker Container 🐋 |
-| Linux Desktop App | Nix Flake ❄️ **or** binary builds for your distribution | `nix run` **or** Distribution’s package manager |
+| Platform 🌐 | Build Method | Distribution Channel |
+|------------|--------------|----------------------|
+| **Android** 📱 | `make android‑apk` (Makefile) | **Google Play™**, F‑Droid |
+| **iOS / macOS** 🍎 | Nix Flake ❄️ **or** `make ios‑ipa` / `make macos` (Makefile) | **Apple App Store™** |
+| **Windows** 🪟 | TPD (Target Platform Deployment) | Windows App Store |
+| **WebUI** 🌍 | Nix Flake ❄️ **or** Docker Image 🐋 | Docker Container |
+| **Linux Desktop** 🐧 | Nix (`nix copy` / `nix run`) **or** binary builds for your distro | Distribution’s package manager |
 
-Brand names are owned by the appropriate owners
+**Disclaimer:** *Google Play™* is a trademark of **Google LLC**. *Apple App Store™* is a trademark of **Apple Inc.**. All other names are used descriptively and are not claimed as trademarks.
 
 ## Features
 * React Native with Expo: create simple frontend that work on iOS, Android and on the Web
