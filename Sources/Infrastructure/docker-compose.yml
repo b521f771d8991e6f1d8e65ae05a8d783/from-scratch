@@ -28,9 +28,10 @@ services:
       context: ../..
       target: ${BACKEND_TARGET}
     tty: ${BACKEND_TTY}
+    user: "nobody:nogroup"
     env_file:
       - ../../.env
-    depends_on:
+     depends_on:
       - keycloak
       - minio
       - postgresql

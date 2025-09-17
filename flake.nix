@@ -2,11 +2,11 @@
 
 {
   inputs = {
-    nixpkgs.url = "github:b521f771d8991e6f1d8e65ae05a8d783/nixpkgs";
+    nixpkgs.url = "github:b521f771d8991e6f1d8e65ae05a8d783/nixpkgs/stable";
     flake-utils.url = "github:b521f771d8991e6f1d8e65ae05a8d783/flake-utils";
 
     rust-overlay = {
-      url = "github:b521f771d8991e6f1d8e65ae05a8d783/rust-overlay";
+      url = "github:oxalica/rust-overlay/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -65,8 +65,7 @@
               nodejs
               python3
             ]
-            ++ lib.optionals pkgs.stdenv.isLinux [ 
-              # do not add rpm and dpkg here so that they are not built - we do not need them
+            ++ lib.optionals pkgs.stdenv.isLinux [
               swift
               swiftpm
               clang 
