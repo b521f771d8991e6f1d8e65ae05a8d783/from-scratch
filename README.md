@@ -13,6 +13,7 @@ A simple, very opinionated template for all sorts of AI projects!
 | iOS / macOS App | Nix Flake ❄️ **or** `make ios-ipa` (Makefile) | `nix run` **or** App Store 🍎 |
 | WebUI | Nix Flake ❄️ **or** Docker Image |`nix run` **or**  Docker Container 🐋 |
 | Linux Desktop App | Nix Flake ❄️ **or** binary builds for your distribution | `nix run` **or** Distribution’s package manager |
+
 Brand names are owned by the appropriate owners
 
 ## Features
