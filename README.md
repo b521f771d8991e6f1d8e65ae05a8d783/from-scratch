@@ -2,11 +2,7 @@
 A simple, very opinionated template for all sorts of AI projects!
 
 ## How to develop?
-| OS | Development Options | Tools / Environment Provided |
-|----|----------------------|------------------------------|
-| **macOS** | Makefile workflow **or** `nix develop` **or** Devcontainer | • Native compilers/interpreters installed via Homebrew (e.g., clang, python, node) <br>• Nix‑managed sandbox with exact dependency versions |
-| **Linux** | `nix develop`  **or** Devcontainer |  Docker‑based Debian container with all runtimes pre‑installed |
-| **Windows** | Devcontainer | runs a Debian container that includes compilers, interpreters, and any project‑specific utilities, giving a Linux‑like development environment without needing native Windows toolchains |
+Use the devcontainer, this method works on Windows, Linux and macOS (and even on the Web :))
 
 ## How to get Artifacts?
 | Platform 🌐 | Build Method | Distribution Channel |
