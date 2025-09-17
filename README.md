@@ -1,11 +1,12 @@
 # from-scratch
 A simple, very opinionated template for all sorts of AI projects!
 
-## How to Develop?
-| Platform / Environment | Notes |
-|------------------------|-------|
-| macOS / Darwin 🍎 |  Choose either the traditional Makefile workflow or the reproducible Nix ❄️ build system. |
-| Windows / Linux / macOS |  Use the Devcontainer the container provides a consistent Debian environment for development. |
+## How to develop?
+| OS | Development Options | Tools / Environment Provided |
+|----|----------------------|------------------------------|
+| **macOS** | Makefile workflow  <br> **or** `nix develop` **or** Devcontainer | • Native compilers/interpreters installed via Homebrew (e.g., clang, python, node) <br>• Nix‑managed sandbox with exact dependency versions <br>• Docker‑based Debian container (VS Code Remote‑Containers) |
+| **Linux** | `nix develop`  **or** Devcontainer | • Nix sandbox with reproducible toolchain <br>• Docker‑based Debian container with all runtimes pre‑installed |
+| **Windows** | Devcontainer **or** Docker (or Docker Desktop) runs a Debian container that includes compilers, interpreters, and any project‑specific utilities, giving a Linux‑like development environment without needing native Windows toolchains |
 
 ## How to get Artifacts?
 | Platform 🌐 | Build Method | Distribution Channel |
