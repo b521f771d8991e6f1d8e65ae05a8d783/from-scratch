@@ -7,11 +7,13 @@ A simple, very opinionated template for all sorts of AI projects!
  - locally via the Makefile
 
 ## Artifacts:
- - Android App, via the Makefile (make android-apk)
- - iOS App, built via the Makefile (make ios-ipa)
+ - Android App, via the Makefile (make android-apk), distribute via Google Play and F-Droid
+ - iOS/macOS App, built via the Makefile (make ios-ipa macos), distribute via the Mac App store
+ - Windows App: TPD, distribute via the Windows App Store
  - WebUI, built either via:
   - Nix Flake
   - Docker Image
+ - Linux Desktop App, built via Nix (copy with nix copy), or available in your distribution
 
 ## Features
 * React Native with Expo: create simple frontend that work on iOS, Android and on the Web

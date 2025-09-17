@@ -4,11 +4,6 @@
   inputs = {
     nixpkgs.url = "github:b521f771d8991e6f1d8e65ae05a8d783/nixpkgs/stable";
     flake-utils.url = "github:b521f771d8991e6f1d8e65ae05a8d783/flake-utils";
-
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay/stable";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -16,7 +11,6 @@
       self,
       nixpkgs,
       flake-utils,
-      rust-overlay,
     }:
     flake-utils.lib.eachSystem
       [
@@ -31,20 +25,6 @@
           pkgs = import nixpkgs {
             inherit system;
             config.allowUnfree = false;
-            overlays = [ rust-overlay.overlays.default ];
-          };
-
-          rustToolchain = pkgs.rust-bin.stable.latest.default.override {
-            extensions = [ "rust-src" ];
-            targets = [
-              "x86_64-apple-darwin"
-              "aarch64-apple-darwin"
-              "x86_64-unknown-linux-musl"
-              "aarch64-unknown-linux-musl"
-              "x86_64-unknown-linux-gnu"
-              "aarch64-unknown-linux-gnu"
-              "wasm32-unknown-unknown"
-            ];
           };
 
           global-packages =
@@ -58,7 +38,9 @@
               ninja
               jq # tools
               clang-tools
-              rustToolchain
+              cargo
+              rustc
+              lld
               wasm-pack
               wasm-bindgen-cli_0_2_100
               bacon
@@ -220,7 +202,6 @@
           packages = {
             backend = backend;
             default = backend;
-            docker-image = docker-image;
           };
 
           formatter = pkgs.nixfmt-tree;
