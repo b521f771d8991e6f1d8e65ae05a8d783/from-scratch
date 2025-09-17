@@ -9,11 +9,11 @@ A simple, very opinionated template for all sorts of AI projects!
 ## How to get Artifacts?
 | Platform | Build Method | Distribution Channel |
 |----------|--------------|----------------------|
-| Android App | `make android-apk` (Makefile) | Google Play, F‑Droid |
-| iOS / macOS App | `make ios-ipa` (Makefile) | mac App Store |
-| Windows App | TPD | Windows App Store |
-| WebUI | Nix Flake **or** Docker Image | Docker Container 🐋 |
-| Linux Desktop App | Nix (`nix copy`) **or** package manager | Distribution’s package manager |
+| Android App | `make android-apk` (Makefile) | App Store, F‑Droid |
+| iOS / macOS App | Nix Flake ❄️ **or** `make ios-ipa` (Makefile) | `nix run` **or** App Store 🍎 |
+| WebUI | Nix Flake ❄️ **or** Docker Image |`nix run` **or**  Docker Container 🐋 |
+| Linux Desktop App | Nix Flake ❄️ **or** binary builds for your distribution | `nix run` **or** Distribution’s package manager |
+Brand names are owned by the appropriate owners
 
 ## Features
 * React Native with Expo: create simple frontend that work on iOS, Android and on the Web
