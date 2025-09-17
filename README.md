@@ -13,11 +13,11 @@ A simple, very opinionated template for all sorts of AI projects!
 |------------|--------------|----------------------|
 | **Android** 📱 | `make android‑apk` (Makefile) | **Google Play™**, F‑Droid |
 | **iOS / macOS** 🍎 | Nix Flake ❄️ **or** `make ios‑ipa` / `make macos` (Makefile) | **Apple App Store™** |
-| **Windows** 🪟 | TPD (Target Platform Deployment) | Windows App Store |
+| **Windows** 🪟 | TPD (Target Platform Deployment) | TBD |
 | **WebUI** 🌍 | Nix Flake ❄️ **or** Docker Image 🐋 | Docker Container |
 | **Linux Desktop** 🐧 | Nix (`nix copy` / `nix run`) **or** binary builds for your distro | Distribution’s package manager |
 
-**Disclaimer:** *Google Play™* is a trademark of **Google LLC**. *Apple App Store™* is a trademark of **Apple Inc.**. All other names are used descriptively and are not claimed as trademarks.
+**Disclaimer:** *Google Play™* is a trademark of **Google LLC**. *Apple App Store™* is a trademark of **Apple Inc.**.
 
 ## Features
 * React Native with Expo: create simple frontend that work on iOS, Android and on the Web
