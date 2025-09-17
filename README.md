@@ -5,7 +5,8 @@ A simple, very opinionated template for all sorts of AI projects!
 | Platform / Environment | Notes |
 |------------------------|-------|
 | **macOS / Darwin** 🍎 |  Choose either the traditional Makefile workflow or the reproducible Nix build system. |
-| **Devcontainer (Debian base)** 🐳 |  Works on Windows, macOS, and Linux; the container provides a consistent Debian environment for development. |
+| Linux 🐧 | Use nix or, if you have set up your system correctly, the Makefile (not recommended) |
+| Windows / Linux / macOS |  Works on Windows, macOS, and Linux; the container provides a consistent Debian environment for development. |
 
 ## How to get Artifacts?
 | Platform 🌐 | Build Method | Distribution Channel |
