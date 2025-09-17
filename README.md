@@ -13,7 +13,7 @@ A simple, very opinionated template for all sorts of AI projects!
 |------------|--------------|----------------------|
 | **Android** 📱 | `make android‑apk` (Makefile) | **Google Play™**, F‑Droid |
 | **iOS / macOS** 🍎 | Nix Flake ❄️ **or** `make ios‑ipa` / `make macos` (Makefile) | **Apple App Store™** |
-| **Windows** 🪟 | TPD (Target Platform Deployment) | TBD |
+| **Windows** 🪟 | TPD | TBD |
 | **WebUI** 🌍 | Nix Flake ❄️ **or** Docker Image 🐋 | Docker Container |
 | **Linux Desktop** 🐧 | Nix (`nix copy` / `nix run`) **or** binary builds for your distro | Distribution’s package manager |
 
