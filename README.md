@@ -1,19 +1,19 @@
 # from-scratch
 A simple, very opinionated template for all sorts of AI projects!
 
-## Works on
+## Compiles on
  - macOS/Darwin: in nix, outside of nix
  - Devcontainer: using debian
  - locally via the Makefile
 
-## Artifacts:
- - Android App, via the Makefile (make android-apk), distribute via Google Play and F-Droid
- - iOS/macOS App, built via the Makefile (make ios-ipa macos), distribute via the Mac App store
- - Windows App: TPD, distribute via the Windows App Store
- - WebUI, built either via:
-  - Nix Flake
-  - Docker Image
- - Linux Desktop App, built via Nix (copy with nix copy), or available in your distribution
+## How to get Artifacts?
+| Platform | Build Method | Distribution Channel |
+|----------|--------------|----------------------|
+| Android App | `make android-apk` (Makefile) | Google Play, F‑Droid |
+| iOS / macOS App | `make ios-ipa` (Makefile) | mac App Store |
+| Windows App | TPD | Windows App Store |
+| WebUI | Nix Flake **or** Docker Image | Docker Container 🐋 |
+| Linux Desktop App | Nix (`nix copy`) **or** package manager | Distribution’s package manager |
 
 ## Features
 * React Native with Expo: create simple frontend that work on iOS, Android and on the Web
