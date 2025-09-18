@@ -3,10 +3,8 @@
 		"dockerfile": "Dockerfile",
 		"target": "development"
 	},
-	"workspaceFolder": "/workspace",
 	"mounts": [
 		"type=bind,source=/nix,target=/nix",
-		"type=bind,source=${localWorkspaceFolder},target=/workspace",
 		// ssh and GPG setup
 		"type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,readonly",
 		"type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE}/.gnupg,target=/root/.gnupg",
