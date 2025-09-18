@@ -16,6 +16,7 @@
 		"HOSTNAME": "devcontainer",
 		"PROMPT": "%F{cyan}%n@%m %F{yellow}%1~%f %F{green}%(!.#.$)%f "
 	},
+	"postAttachCommand": "make init", // download dependencies at startup, this is automatically executed in the right directory
 	"customizations": {
 		"vscode": {
 			"terminal.integrated.shell.linux": "/bin/zsh",
@@ -31,7 +32,11 @@
 				"esbenp.prettier-vscode",
 				"jock.svg",
 				"swiftlang.swift-vscode",
-				"bradlc.vscode-tailwindcss"
+				"bradlc.vscode-tailwindcss",
+				"ms-python.python",
+				"bbenoist.nix",
+				"continue.continue",
+				"github.vscode-codeql"
 			]
 		}
 	}

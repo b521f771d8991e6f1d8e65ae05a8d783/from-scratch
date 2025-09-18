@@ -21,7 +21,6 @@
 		"source.organizeImports": "explicit",
 		"source.sortMembers": "explicit"
 	},
-	"git.enableCommitSigning": true,
 	"clangd.arguments": [
 		"-log=verbose",
 		"-pretty",
