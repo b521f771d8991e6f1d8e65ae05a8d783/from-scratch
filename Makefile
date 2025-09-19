@@ -113,7 +113,7 @@ installer: all
 	cd .cmake/root && npx dotenvx run -- cpack
 	npx shx rm -rf ${OUT_DIR}
 	npx shx mkdir -p ${OUT_DIR}
-	npx shx mv .cmake/root/$(shell basename $(CURDIR))* $(OUT_DIR)
+	npx shx mv .cmake/root/* $(OUT_DIR)
 
 .PHONY: android-apk
 android-apk:
