@@ -1,7 +1,7 @@
 {
 	"build": {
 		"dockerfile": "Dockerfile",
-		"target": "development"
+		"target": "devcontainer"
 	},
 	"mounts": [
 		"type=bind,source=/nix,target=/nix",
@@ -16,6 +16,11 @@
 		"HOSTNAME": "devcontainer",
 		"PROMPT": "%F{cyan}%n@%m %F{yellow}%1~%f %F{green}%(!.#.$)%f "
 	},
+	"runArgs": [
+        "--env-file",
+        "${localWorkspaceFolder}/.env"
+    ],
+    "initializeCommand": "touch ${localWorkspaceFolder}/.env",
 	"postAttachCommand": "make init", // download dependencies at startup, this is automatically executed in the right directory
 	"customizations": {
 		"vscode": {
