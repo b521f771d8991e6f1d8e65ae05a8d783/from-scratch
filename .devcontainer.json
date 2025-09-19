@@ -68,7 +68,8 @@
 					"--compile-commands-dir=.cmake"
 				],
 				"git.autofetch": true,
-				"editor.formatOnSave": true
+				"editor.formatOnSave": true,
+				"makefile.configureOnOpen": false
 			}
 		}
 	}
