@@ -133,7 +133,7 @@ rootfs: installer
 
 .PHONY: run
 run: all
-	npx dotenvx run --  cargo run
+	npx dotenvx run --  cargo run --bin backend --features="backend"
 
 .PHONY: all
 frontend-dev:
