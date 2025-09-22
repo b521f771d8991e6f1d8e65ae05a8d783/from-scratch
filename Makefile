@@ -46,8 +46,8 @@ endif
 init:
 	git submodule update --init --recursive
 	cargo fetch
-	npm install --workspaces
-	npm install
+	npm install --before="$(date -v -1d)" --workspaces
+	npm install --before="$(date -v -1d)"
 	swift package resolve
 
 .PHONY: trixie-tools-static-offline
