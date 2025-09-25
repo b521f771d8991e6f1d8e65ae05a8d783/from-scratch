@@ -140,11 +140,21 @@
               chmod +x $out/bin/* #  TODO remove this hack
             '';
           };
+
+          docker-image = pkgs.dockerTools.buildLayeredImage {
+            name = backend.name;
+            contents = [ backend ];
+          
+            config = {
+                Cmd = [ "${backend}/bin/backend" ];
+            };
+          };
         in
         {
           packages = {
             backend = backend;
             default = backend;
+            docker-image = docker-image;
           };
 
           formatter = pkgs.nixfmt-tree;
