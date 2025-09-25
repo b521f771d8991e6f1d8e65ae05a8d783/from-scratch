@@ -14,6 +14,6 @@ jobs:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
     - run: nix flake check --all-systems
     - run: nix build .
-    - name: Run Linux‑specific command
+    - name: Build the docker image (on linux only)
       if: runner.os == 'Linux'
       run: nix build .#docker-image && cat result | docker load
