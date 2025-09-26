@@ -1,8 +1,5 @@
 {
-	"build": {
-		"dockerfile": "Dockerfile",
-		"target": "devcontainer"
-	},
+	"image": "ghcr.io/b521f771d8991e6f1d8e65ae05a8d783/base-tools/debian-tools:main",
 	"mounts": [
 		"type=bind,source=/nix,target=/nix",
 		// ssh and GPG setup
@@ -17,10 +14,10 @@
 		"PROMPT": "%F{cyan}%n@%m %F{yellow}%1~%f %F{green}%(!.#.$)%f "
 	},
 	"runArgs": [
-        "--env-file",
-        "${localWorkspaceFolder}/.env"
-    ],
-    "initializeCommand": "touch ${localWorkspaceFolder}/.env",
+		"--env-file",
+		"${localWorkspaceFolder}/.env"
+	],
+	"initializeCommand": "touch ${localWorkspaceFolder}/.env",
 	"postAttachCommand": "make init", // download dependencies at startup, this is automatically executed in the right directory
 	"customizations": {
 		"vscode": {
@@ -41,14 +38,17 @@
 				"ms-python.python",
 				"bbenoist.nix",
 				"continue.continue",
-				"github.vscode-codeql"
+				"github.vscode-codeql",
+				"wix.vscode-import-cost"
 			],
 			"settings": {
 				"[rust]": {
 					"editor.defaultFormatter": "rust-lang.rust-analyzer",
 					"editor.formatOnSave": true
 				},
-				"rust-analyzer.linkedProjects": ["Cargo.toml"],
+				"rust-analyzer.linkedProjects": [
+					"Cargo.toml"
+				],
 				"C_Cpp.intelliSenseEngine": "disabled",
 				"explorer.excludeGitIgnore": false,
 				"terminal.integrated.defaultProfile.linux": "zsh",
@@ -60,7 +60,9 @@
 					"json"
 				],
 				"prettier.configPath": ".prettierrc",
-				"eslint.workingDirectories": ["${workspaceFolder}"],
+				"eslint.workingDirectories": [
+					"${workspaceFolder}"
+				],
 				"editor.codeActionsOnSave": {
 					"source.fixAll": "explicit",
 					"source.organizeImports": "explicit",

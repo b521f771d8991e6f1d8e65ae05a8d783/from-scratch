@@ -10,7 +10,7 @@ SWIFT_SDK_CMD := --swift-sdk $(shell echo $(TARGET) | sed 's/unknown/swift/')
 CARGO_TARGET_FLAG := --target ${TARGET}
 CMAKE_BUILDER := Ninja
 
-SOURCES_DIR := Sources
+SOURCES_DIR := Sources/Backend/integrations
 CMAKE_DIRS := $(shell find $(SOURCES_DIR) -maxdepth 2 -type f -name 'CMakeLists.txt' -exec dirname {} \;)
 
 ifneq (, $(shell command -v gnustep-config))
@@ -48,7 +48,7 @@ init:
 	cargo fetch
 	npm install --before="$(date -v -1d)" --workspaces
 	npm install --before="$(date -v -1d)"
-	swift package resolve
+	#swift package resolve
 
 .PHONY: trixie-tools-static-offline
 trixie-tools-offline:
@@ -64,7 +64,7 @@ cmake-projects:
 		TARGET=${TARGET} VARIANT=${VARIANT} npx dotenvx run -- cmake --build .cmake/$$i; \
 	done
 
-	jq -s add .cmake/Sources/**/compile_commands.json > .cmake/compile_commands.json
+	jq -s add .cmake/${SOURCES_DIR}/**/compile_commands.json > .cmake/compile_commands.json
 
 	npx dotenvx run -- cmake -G ${CMAKE_BUILDER} -DTARGET=${TARGET} -DVARIANT=${VARIANT}  -S . -B .cmake/root;
 	npx dotenvx run -- cmake --build .cmake/root;
@@ -83,18 +83,8 @@ backend: cmake-projects
 	npx dotenvx run -- cargo build ${CARGO_TARGET_FLAG} ${CARGO_VARIANT_FLAG} --features backend
 	#CC=clang CXX=clang++ swift build --configuration ${VARIANT} # ${SWIFT_SDK_CMD}
 
-.PHONY: show-info
-show-info:
-	@echo Building "${VARIANT}" for target "${TARGET}" using CC=${CC} CXX=${CXX} OBJC=${OBJC} OBJCXX=${OBJCXX}
-	@echo environment looks like this:
-	@echo CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}"
-	@echo OBJCFLAGS="${OBJCFLAGS}" OBJCXXFLAGS="${OBJCXXFLAGS}"
-	@echo C_INCLUDE_PATH=${C_INCLUDE_PATH} CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}
-	@echo OBJC_INCLUDE_PATH=${OBJC_INCLUDE_PATH} OBJCPLUS_INCLUDE_PATH=${OBJCPLUS_INCLUDE_PATH}
-	@echo LDFLAGS="$(LDFLAGS)"
-
 .PHONY: all
-all: show-info shared-frontend-and-backend-parts frontend backend
+all: shared-frontend-and-backend-parts frontend backend
 
 .PHONY: test
 test:
@@ -138,10 +128,6 @@ run: all
 .PHONY: all
 frontend-dev:
 	npx dotenvx run -- npm run web --workspaces # start frontend
-
-.PHONY: proxy
-proxy:
-	lighttpd -f Development/proxy.conf -D
 
 .PHONY: format
 format:

@@ -10,12 +10,10 @@ import {
 	useGetBackendVersionQuery,
 } from "@/redux/state/apiSlice";
 import { useGetPrivateBackendStatusQuery } from "@/redux/state/privateApiSlice";
-import { useTranslation } from "react-i18next";
 
 export default function AboutScreen() {
 	const appConfig = useAppConfig();
 	const colorScheme = useColorScheme();
-	const { t } = useTranslation();
 	const {
 		isLoading: statusIsLoading,
 		data: status,
@@ -64,7 +62,7 @@ export default function AboutScreen() {
 		>
 			<ThemedView style={styles.titleContainer}>
 				<Text>
-					{t("about.made_by")}: {process.env.EXPO_PUBLIC_APP_VENDOR}
+					{"about.made_by"}: {process.env.EXPO_PUBLIC_APP_VENDOR}
 				</Text>
 				<Text>
 					Backend /api/private Status:{" "}
