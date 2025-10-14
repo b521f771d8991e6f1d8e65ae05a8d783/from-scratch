@@ -50,7 +50,7 @@
             ++ lib.optionals pkgs.stdenv.isLinux [
               swift
               swiftpm
-              clang 
+              clang
               gobjc
               gnustep-base-gcc
               gnustep-gui-gcc
@@ -106,11 +106,7 @@
               else
                 "";
 
-            CPLUS_INCLUDE_PATH =
-              if pkgs.stdenv.isDarwin then
-                "${pkgs.libcxx.dev}/include/c++/v1"
-                else
-                  "";
+            CPLUS_INCLUDE_PATH = if pkgs.stdenv.isDarwin then "${pkgs.libcxx.dev}/include/c++/v1" else "";
           };
 
           backend = pkgs.rustPlatform.buildRustPackage {
@@ -141,12 +137,16 @@
             '';
           };
 
-          docker-image = pkgs.dockerTools.buildLayeredImage {
+          docker-image = pkgs.dockerTools.buildImage {
             name = backend.name;
-            contents = [ backend ];
-          
+
+            copyToRoot = pkgs.buildEnv {
+              name = "image-root";
+              paths = [ backend ];
+            };
+
             config = {
-                Cmd = [ "${backend}/bin/backend" ];
+              EntryPoint = [ "${backend}/bin/backend" ];
             };
           };
         in
@@ -160,7 +160,7 @@
           formatter = pkgs.nixfmt-tree;
         }
       );
-  
+
   #templates = {
   #  defaultTemplate = {
   #    path = ./.;

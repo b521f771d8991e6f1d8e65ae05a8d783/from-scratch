@@ -1,5 +1,5 @@
 [package]
-name = "backend"
+name = "core"
 version = "0.1.0"
 edition = "2024"
 
@@ -20,13 +20,11 @@ reqwest = { version = "0.12.15", features = ["json", "rustls-tls"], default-feat
 diesel = { version = "2.2.9", optional = true }
 
 [lib]
-name = "from_scratch"
-path = "src/lib.rs"
+name = "core"
 crate-type = ["cdylib", "rlib", "staticlib"]
 
 [[bin]]
 name = "backend"
-path = "src/backend.rs"
 required-features = ["backend"]
 
 [features]

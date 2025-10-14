@@ -1,5 +1,6 @@
-use crate::app_config::AppConfig;
 use actix_web::{HttpResponse, Responder};
+
+use crate::app_config::AppConfig;
 
 #[actix_web::get("/app-config.json")]
 async fn app_config() -> impl Responder {

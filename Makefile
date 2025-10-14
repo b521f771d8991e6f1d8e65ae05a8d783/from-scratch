@@ -10,7 +10,7 @@ SWIFT_SDK_CMD := --swift-sdk $(shell echo $(TARGET) | sed 's/unknown/swift/')
 CARGO_TARGET_FLAG := --target ${TARGET}
 CMAKE_BUILDER := Ninja
 
-SOURCES_DIR := Sources/Backend/integrations
+SOURCES_DIR := Sources/Core/integrations
 CMAKE_DIRS := $(shell find $(SOURCES_DIR) -maxdepth 2 -type f -name 'CMakeLists.txt' -exec dirname {} \;)
 
 ifneq (, $(shell command -v gnustep-config))
@@ -64,7 +64,7 @@ cmake-projects:
 		TARGET=${TARGET} VARIANT=${VARIANT} npx dotenvx run -- cmake --build .cmake/$$i; \
 	done
 
-	jq -s add .cmake/${SOURCES_DIR}/**/compile_commands.json > .cmake/compile_commands.json
+	jq -s add .cmake/${SOURCES_DIR}/**/compile_commands.json  > .cmake/compile_commands.json
 
 	npx dotenvx run -- cmake -G ${CMAKE_BUILDER} -DTARGET=${TARGET} -DVARIANT=${VARIANT}  -S . -B .cmake/root;
 	npx dotenvx run -- cmake --build .cmake/root;
@@ -72,7 +72,7 @@ cmake-projects:
 # apple clang does not have a webassembly target, so we need the one shipped by e.g. homebrew. Do not do this in other parts, because we do not need wasm there and want to use Apple Clang there.
 .PHONY: shared-frontend-and-backend-parts
 shared-frontend-and-backend-parts:
-	PATH="/opt/homebrew/opt/llvm/bin:${PATH}" npx dotenvx run -- wasm-pack build --out-dir ../../generated/npm-pkgs/from-scratch Sources/Backend --mode no-install
+	PATH="/opt/homebrew/opt/llvm/bin:${PATH}" npx dotenvx run -- wasm-pack build --out-dir ../../generated/npm-pkgs/from-scratch Sources/Core --mode no-install
 
 .PHONY: frontend
 frontend: shared-frontend-and-backend-parts
@@ -95,7 +95,6 @@ test:
 .PHONY: clean
 clean:
 	cargo clean
-	swift package clean
 	npx shx rm -rf .build .cmake target generated node_modules result output
 
 .PHONY: installer

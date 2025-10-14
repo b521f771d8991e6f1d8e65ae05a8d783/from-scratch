@@ -6,9 +6,9 @@ use actix_web::{
 };
 use std::env;
 
-mod app_config;
+use core::app_config;
+use core::build_information;
 mod app_state;
-mod build_information;
 mod keycloak_config;
 mod routes;
 

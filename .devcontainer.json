@@ -1,7 +1,5 @@
 {
-	"build": {
-        "dockerfile": ".devcontainer.dockerfile"
-    },
+	"image": "ghcr.io/b521f771d8991e6f1d8e65ae05a8d783/base-tools/debian-tools:main",
 	"mounts": [
 		"type=bind,source=/nix,target=/nix",
 		// ssh and GPG setup
@@ -19,6 +17,7 @@
 		"--env-file",
 		"${localWorkspaceFolder}/.env"
 	],
+	"postCreateCommand": "cargo install wasm-bindgen-cli@0.2.100",
 	"initializeCommand": "touch ${localWorkspaceFolder}/.env",
 	"postAttachCommand": "make init", // download dependencies at startup, this is automatically executed in the right directory
 	"customizations": {

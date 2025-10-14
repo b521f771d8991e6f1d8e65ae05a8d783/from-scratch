@@ -351,26 +351,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 
 [[package]]
-name = "backend"
-version = "0.1.0"
-dependencies = [
- "actix-cors",
- "actix-web",
- "actix-web-middleware-keycloak-auth",
- "derive-getters",
- "diesel",
- "env_logger",
- "log",
- "mime_guess",
- "mongodb",
- "reqwest",
- "rust-embed",
- "serde",
- "serde_json",
- "wasm-bindgen",
-]
-
-[[package]]
 name = "backtrace"
 version = "0.3.75"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -580,6 +560,26 @@ dependencies = [
  "percent-encoding",
  "time",
  "version_check",
+]
+
+[[package]]
+name = "core"
+version = "0.1.0"
+dependencies = [
+ "actix-cors",
+ "actix-web",
+ "actix-web-middleware-keycloak-auth",
+ "derive-getters",
+ "diesel",
+ "env_logger",
+ "log",
+ "mime_guess",
+ "mongodb",
+ "reqwest",
+ "rust-embed",
+ "serde",
+ "serde_json",
+ "wasm-bindgen",
 ]
 
 [[package]]

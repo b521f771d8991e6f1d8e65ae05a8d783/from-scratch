@@ -3,7 +3,7 @@ use actix_web::{HttpResponse, web};
 use log::info;
 
 #[derive(rust_embed::Embed)]
-#[folder = "../../generated/web-dist/frontend"]
+#[folder = "../UI/dist"]
 pub struct WebAppData;
 
 impl WebAppData {
