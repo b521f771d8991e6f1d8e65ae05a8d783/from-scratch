@@ -42,7 +42,8 @@
 				"continue.continue",
 				"github.vscode-codeql",
 				"wix.vscode-import-cost",
-				"humao.rest-client"
+				"humao.rest-client",
+                "tomoki1207.pdf"
 			],
 			"settings": {
 				"[rust]": {
