@@ -1,8 +1,6 @@
 import { Action, configureStore, isPlain, ThunkAction } from "@reduxjs/toolkit";
-import { listenerMiddleware } from "./listenerMiddleware.ts";
-import { apiSlice } from "./state/apiSlice.ts";
-import authReducer from "./state/authSlice.ts";
-import { privateApiSlice } from "./state/privateApiSlice.ts";
+import { apiSlice } from "./state/apiSlice";
+import { privateApiSlice } from "./state/privateApiSlice";
 
 /**
  * Retrieves the entries of an object, with special handling for objects that implement a `toJson` method.
@@ -13,7 +11,7 @@ import { privateApiSlice } from "./state/privateApiSlice.ts";
  * @param x - The input object to retrieve entries from. It can be any type.
  * @returns An array of key-value pairs representing the entries of the object.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function getEntriesWithToJsonSupport(x: any): [string, any][] {
 	if ("toJson" in x) {
 		// TODO fix this
@@ -33,14 +31,13 @@ function getEntriesWithToJsonSupport(x: any): [string, any][] {
  * @param x - The value to check for serializability.
  * @returns `true` if the value is a plain object or has a `toJson` method, otherwise `false`.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function isSerializableWithToJsonSupport(x: any): boolean {
 	return isPlain(x) || "toJson" in x;
 }
 
 export const store = configureStore({
 	reducer: {
-		auth: authReducer,
 		[apiSlice.reducerPath]: apiSlice.reducer,
 		[privateApiSlice.reducerPath]: privateApiSlice.reducer,
 	},
@@ -51,9 +48,8 @@ export const store = configureStore({
 				isSerializable: isSerializableWithToJsonSupport,
 			},
 		})
-			.prepend(listenerMiddleware.middleware)
-			.concat(apiSlice.middleware)
-			.concat(privateApiSlice.middleware),
+		.concat(apiSlice.middleware)
+		.concat(privateApiSlice.middleware),
 	devTools: process.env.NODE_ENV === "development",
 });
 

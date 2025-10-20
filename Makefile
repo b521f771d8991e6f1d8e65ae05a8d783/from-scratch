@@ -124,9 +124,14 @@ rootfs: installer
 run: all
 	npx dotenvx run --  cargo run --bin backend --features="backend"
 
-.PHONY: all
-frontend-dev:
-	npx dotenvx run -- npm run web --workspaces # start frontend
+.PHONY: run-dev
+run-dev: all
+	tmux new-session -d -s dev \
+		"cd Development && npm run dev-proxy" \; \
+		split-window -h "BROWSER=none npx dotenvx run -- npm run web --workspaces" \; \
+		split-window -v -t dev:0.0 "npx dotenvx run -- bacon run --features=\"backend\"" \; \
+		select-layout tiled \; \
+		attach-session -t dev
 
 .PHONY: format
 format:

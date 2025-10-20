@@ -1,17 +1,17 @@
+import { getCurrentToken } from "@/components/LogInButton";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getBackendURL } from "../../config/appConfig";
-import { AppState } from "../store";
-import { selectCurrentToken } from "./authSlice";
 
 export const privateApiSlice = createApi({
 	reducerPath: "api/private",
 	baseQuery: fetchBaseQuery({
-		baseUrl: getBackendURL() + "/private",
-		prepareHeaders: (headers, { getState }) => {
-			const token = selectCurrentToken(getState() as AppState);
+		baseUrl: "/api/private",
+		prepareHeaders: (headers) => {
+			const token = getCurrentToken();
 
 			if (token) {
 				headers.set("Authorization", `Bearer ${token}`);
+			} else {
+				console.error("No authorization found")
 			}
 
 			return headers;
