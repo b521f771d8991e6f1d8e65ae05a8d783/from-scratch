@@ -2,10 +2,14 @@
 	"extends": "expo/tsconfig.base",
 	"compilerOptions": {
 		"target": "ES5",
-		"lib": ["ES2024"],
+		"lib": [
+			"ES2024"
+		],
 		"module": "ES2022",
 		"paths": {
-			"@/*": ["./*"]
+			"@/*": [
+				"./src/*"
+			]
 		},
 		/* Bundler mode */
 		"moduleResolution": "bundler",
