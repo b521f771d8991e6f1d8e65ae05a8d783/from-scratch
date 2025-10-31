@@ -125,15 +125,14 @@
               mkdir -p ${backend.HOME}            
               cp -r ${npm-deps}/node_modules .
               chmod -R 777 node_modules # to prevent Error: EACCES: permission denied, mkdir '/build/s4bnqnz1prnhv383fpn2hqm29m7ifn3g-source/node_modules/react-native-css-interop/.cache'
-              make rootfs
+              make all
             '';
 
             checkPhase = "make test";
 
             installPhase = ''
               mkdir -p $out
-              cp -r output/rootfs/* $out
-              chmod +x $out/bin/* #  TODO remove this hack
+              DESTDIR=$out make install
             '';
           };
 

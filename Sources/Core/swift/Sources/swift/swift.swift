@@ -3,4 +3,10 @@
 
 import Foundation
 
-print("Hello, World")
+func sayHello() {
+    print("Hello, World")
+}
+
+public func get1() -> Int8 {
+    return 1
+}

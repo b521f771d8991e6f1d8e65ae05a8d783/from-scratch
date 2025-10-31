@@ -46,13 +46,7 @@ endif
 init:
 	git submodule update --init --recursive
 	cargo fetch
-	npm install --before="$(date -v -1d)" --workspaces
-	npm install --before="$(date -v -1d)"
-	#swift package resolve
-
-.PHONY: trixie-tools-static-offline
-trixie-tools-offline:
-	docker build -f Dependencies/base-tools/trixie-tools.dockerfile . -t trixie-tools:main
+	npm install
 
 .PHONY: cmake-projects
 cmake-projects:
@@ -66,9 +60,6 @@ cmake-projects:
 
 	jq -s add .cmake/${SOURCES_DIR}/**/compile_commands.json  > .cmake/compile_commands.json
 
-	npx dotenvx run -- cmake -G ${CMAKE_BUILDER} -DTARGET=${TARGET} -DVARIANT=${VARIANT}  -S . -B .cmake/root;
-	npx dotenvx run -- cmake --build .cmake/root;
-
 # apple clang does not have a webassembly target, so we need the one shipped by e.g. homebrew. Do not do this in other parts, because we do not need wasm there and want to use Apple Clang there.
 .PHONY: shared-frontend-and-backend-parts
 shared-frontend-and-backend-parts:
@@ -81,7 +72,6 @@ frontend: shared-frontend-and-backend-parts
 .PHONY: backend
 backend: cmake-projects
 	npx dotenvx run -- cargo build ${CARGO_TARGET_FLAG} ${CARGO_VARIANT_FLAG} --features backend
-	#CC=clang CXX=clang++ swift build --configuration ${VARIANT} # ${SWIFT_SDK_CMD}
 
 .PHONY: all
 all: shared-frontend-and-backend-parts frontend backend
@@ -97,41 +87,9 @@ clean:
 	cargo clean
 	npx shx rm -rf .build .cmake target generated node_modules result output
 
-.PHONY: installer
-installer: all
-	cd .cmake/root && npx dotenvx run -- cpack
-	npx shx rm -rf ${OUT_DIR}
-	npx shx mkdir -p ${OUT_DIR}
-	npx shx mv .cmake/root/* $(OUT_DIR)
-
-.PHONY: android-apk
-android-apk:
-	cd Sources/UI && ANDROID_HOME=${ANDROID_HOME} PATH="${PATH}:${ANDROID_HOME}/tools/:${ANDROID_HOME}/platform-tools/" npm run build:android:${VARIANT}
-	mkdir -p ${OUT_DIR}
-	cp Sources/UI/android/app/build/outputs/apk/release/app-release.apk ${OUT_DIR}/
-
-.PHONY: ios-ipa
-ios-ipa:
-	cd Sources/UI && npm run build:ios:${VARIANT}
-	mkdir -p ${OUT}
-
-.PHONY: rootfs
-rootfs: installer
-	mkdir -p ${OUT_DIR}/rootfs
-	sh ${OUT_DIR}/*.sh -- --skip-license --prefix=${OUT_DIR}/rootfs
-
 .PHONY: run
 run: all
-	npx dotenvx run --  cargo run --bin backend --features="backend"
-
-.PHONY: run-dev
-run-dev: all
-	tmux new-session -d -s dev \
-		"cd Development && npm run dev-proxy" \; \
-		split-window -h "BROWSER=none npx dotenvx run -- npm run web --workspaces" \; \
-		split-window -v -t dev:0.0 "npx dotenvx run -- bacon run --features=\"backend\"" \; \
-		select-layout tiled \; \
-		attach-session -t dev
+	npx dotenvx run -- bacon run --bin backend --features="backend"
 
 .PHONY: format
 format:
@@ -141,3 +99,10 @@ format:
                     \( -name '*.c'  -o -name '*.cc' -o -name '*.cpp' -o -name '*.c++' -o -name '*.h' -o \
                       -name '*.h++' -o -name '*.cxx' -o -name '*.m'   -o -name '*.mm' \) )
 	npx prettier --write Sources
+
+.PHONY: install
+install: all
+	mkdir -p ${DESTDIR}/bin
+	cp ./target/x86_64-unknown-linux-gnu/${VARIANT}/backend ${DESTDIR}/bin # TODO find a way to make this work for other targets
+	chmod +x ${DESTDIR}/bin/*
+	echo "Installed to ${DESTDIR}/bin"

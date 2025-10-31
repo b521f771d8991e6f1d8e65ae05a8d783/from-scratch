@@ -2,5 +2,6 @@ import Testing
 @testable import swift
 
 @Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    let result = get1()
+    assert(result == 1)
 }
