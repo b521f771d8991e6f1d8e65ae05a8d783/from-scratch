@@ -21,10 +21,12 @@ diesel = { version = "2.2.9", optional = true }
 
 [lib]
 name = "core"
+path = "rust/lib.rs"
 crate-type = ["cdylib", "rlib", "staticlib"]
 
 [[bin]]
 name = "backend"
+path = "rust/bin/backend/main.rs"
 required-features = ["backend"]
 
 [features]

@@ -22,7 +22,6 @@
 		"@react-navigation/native": "^7.1.6",
 		"@reduxjs/toolkit": "^2.5.1",
 		"@stylistic/eslint-plugin-js": "^4.2.0",
-		"babel-plugin-react-compiler": "^19.0.0-beta-ebf51a3-20250411",
 		"expo": "~53.0.11",
 		"expo-auth-session": "^6.2.0",
 		"expo-blur": "~14.1.5",
@@ -62,7 +61,8 @@
 		"@babel/core": "^7.25.2",
 		"@types/react": "~19.0.10",
 		"eslint-config-expo": "~9.2.0",
-		"typescript": "~5.8.3"
+		"typescript": "~5.8.3",
+		"babel-plugin-react-compiler": "^19.0.0-beta-ebf51a3-20250411"
 	},
 	"private": true
 }
