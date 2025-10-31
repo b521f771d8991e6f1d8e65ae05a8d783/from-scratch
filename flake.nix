@@ -137,13 +137,8 @@
             '';
           };
 
-          docker-image = pkgs.dockerTools.buildImage {
+          docker-image = pkgs.dockerTools.buildLayeredImage {
             name = backend.name;
-
-            copyToRoot = pkgs.buildEnv {
-              name = "image-root";
-              paths = [ backend ];
-            };
 
             config = {
               EntryPoint = [ "${backend}/bin/backend" ];

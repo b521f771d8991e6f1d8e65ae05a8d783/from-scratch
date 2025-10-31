@@ -1,19 +1,35 @@
 name: Nix Flake ❄️
 on:
-  workflow_dispatch:
+ workflow_dispatch:
+
 jobs:
-  tests:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-    - uses: actions/checkout@v4
-    - uses: cachix/install-nix-action@v31
-      with:
-        github_access_token: ${{ secrets.GITHUB_TOKEN }}
-    - run: nix flake check --all-systems
-    - run: nix build .
-    - name: Build the docker image (on linux only)
-      if: runner.os == 'Linux'
-      run: nix build .#docker-image && cat result | docker load
+ tests:
+  steps:
+   - uses: actions/checkout@v4
+
+   - name: Check for nix
+     id: check_nix
+     run: |
+      if command -v nix >/dev/null 2>&1; then
+        echo "NIX_PRESENT=true" >> $GITHUB_ENV
+        echo "present=true" >> $GITHUB_OUTPUT
+      else
+        echo "NIX_PRESENT=false" >> $GITHUB_ENV
+        echo "present=false" >> $GITHUB_OUTPUT
+      fi
+
+   - name: Install Nix
+     if: steps.check_nix.outputs.present == 'false'
+     uses: cachix/install-nix-action@v25
+
+   - name: Build Nix Flake
+     run: |
+      nix --extra-experimental-features "flakes nix-command" flake check
+      nix --extra-experimental-features "flakes nix-command" build . -L --show-trace
+
+   - name: Build and Push Docker Image
+     if: runner.os == 'Linux'
+     run: |
+      # Build the Docker image
+      nix --extra-experimental-features "flakes nix-command" build .#docker-image -L --show-trace
+      nix --extra-experimental-features "flakes nix-command" run nixpkgs#skopeo -- copy -a docker-archive:./result docker://ghcr.io/${{ github.repository }}:$(git rev-parse --abbrev-ref HEAD) --dest-creds=${{ github.actor }}:${{ github.token }}

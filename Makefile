@@ -10,7 +10,7 @@ SWIFT_SDK_CMD := --swift-sdk $(shell echo $(TARGET) | sed 's/unknown/swift/')
 CARGO_TARGET_FLAG := --target ${TARGET}
 CMAKE_BUILDER := Ninja
 
-SOURCES_DIR := Sources/Core/integrations
+SOURCES_DIR := Sources/Core
 CMAKE_DIRS := $(shell find $(SOURCES_DIR) -maxdepth 2 -type f -name 'CMakeLists.txt' -exec dirname {} \;)
 
 ifneq (, $(shell command -v gnustep-config))
