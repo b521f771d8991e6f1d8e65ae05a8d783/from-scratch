@@ -98,6 +98,6 @@ format:
 .PHONY: install
 install: all
 	mkdir -p ${DESTDIR}/bin
-	cp ./target/x86_64-unknown-linux-gnu/${VARIANT}/backend ${DESTDIR}/bin # TODO find a way to make this work for other targets
+	cp ./target/${TARGET}/${VARIANT}/backend ${DESTDIR}/bin # TODO find a way to make this work for other targets
 	chmod +x ${DESTDIR}/bin/*
 	echo "Installed to ${DESTDIR}/bin"
