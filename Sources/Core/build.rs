@@ -1,4 +1,4 @@
-use std::{fmt::format, process::Command};
+use std::process::Command;
 
 fn get_build_profile_name() -> String {
     // The profile name is always the 3rd last part of the path (with 1 based indexing).
@@ -10,39 +10,6 @@ fn get_build_profile_name() -> String {
         .unwrap_or_else(|| "unknown")
         .to_string()
 }
-
-fn run_command(command: &str, args: &[&str], directory: &str) {
-    let output = Command::new(command)
-        .args(args)
-        .current_dir(directory)
-        .output()
-        .expect(format!("Failed to run {}", command).as_str());
-
-    if !output.status.success() {
-        println!("cargo:warning=exit status: {:?}", output.status);
-    }
-
-    for line in String::from_utf8_lossy(&output.stdout).lines() {
-        println!("cargo:warning={}", line);
-    }
-    for line in String::from_utf8_lossy(&output.stderr).lines() {
-        println!("cargo:warning={}", line);
-    }
-    if !output.status.success() {
-        panic!("error while running {}", command);
-    }
-}
-
-fn build_swift() {
-    run_command("swift", &["build"], "swift");
-}
-
-fn build_native() {
-    run_command("cmake", &["-S", ".", "-B", "../.cmake"], "native");
-    run_command("cmake", &["--build", ".cmake"], ".");
-}
-
-fn build_typescript() {}
 
 fn parse_git() {
     {
@@ -90,8 +57,5 @@ fn parse_git() {
 }
 
 fn main() {
-    build_swift();
-    build_native();
-    build_typescript();
     parse_git();
 }

@@ -1,6 +1,7 @@
 {
     "workspaces": [
-        "Sources/UI"
+        "Sources/UI",
+        "Sources/Core"
     ],
     "devDependencies": {
         "prettier": "^3.6.2",

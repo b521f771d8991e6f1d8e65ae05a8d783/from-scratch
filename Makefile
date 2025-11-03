@@ -48,39 +48,34 @@ init:
 	cargo fetch
 	npm install
 
-.PHONY: cmake-projects
-cmake-projects:
-	@echo Recognized cmake dirs: ${CMAKE_DIRS}
+.PHONY: all
+all:
+    # ------------------------------------------------------------------------------
+	@echo Building frontend
+	# ------------------------------------------------------------------------------
 
+	PATH="/opt/homebrew/opt/llvm/bin:${PATH}" npx dotenvx run -- wasm-pack build --out-dir ../../generated/npm-pkgs/from-scratch Sources/Core --mode no-install
+	npx dotenvx run -- npm run build --workspaces
+	
+	# ------------------------------------------------------------------------------
+	@echo Building backend
+	# ------------------------------------------------------------------------------
+	
+	@echo Recognized cmake dirs: ${CMAKE_DIRS}
 	@for i in $(CMAKE_DIRS); do \
 		echo "Running cmake in $$i"; \
 		TARGET=${TARGET} VARIANT=${VARIANT} npx dotenvx run -- cmake -G ${CMAKE_BUILDER} -S $$i -B .cmake/$$i --preset ${VARIANT}; \
 		TARGET=${TARGET} VARIANT=${VARIANT} npx dotenvx run -- cmake --build .cmake/$$i; \
 	done
-
 	jq -s add .cmake/${SOURCES_DIR}/**/compile_commands.json  > .cmake/compile_commands.json
 
-# apple clang does not have a webassembly target, so we need the one shipped by e.g. homebrew. Do not do this in other parts, because we do not need wasm there and want to use Apple Clang there.
-.PHONY: shared-frontend-and-backend-parts
-shared-frontend-and-backend-parts:
-	PATH="/opt/homebrew/opt/llvm/bin:${PATH}" npx dotenvx run -- wasm-pack build --out-dir ../../generated/npm-pkgs/from-scratch Sources/Core --mode no-install
-
-.PHONY: frontend
-frontend: shared-frontend-and-backend-parts
-	npx dotenvx run -- npm run build:web --workspaces
-
-.PHONY: backend
-backend: cmake-projects
 	npx dotenvx run -- cargo build ${CARGO_TARGET_FLAG} ${CARGO_VARIANT_FLAG} --features backend
-
-.PHONY: all
-all: shared-frontend-and-backend-parts frontend backend
+	# npx dotenvx run -- swift build --package-path Sources/Core/swift --configuration ${VARIANT}
 
 .PHONY: test
 test:
 	npx dotenvx run -- ctest --test-dir .cmake
 	npx dotenvx run -- cargo test
-	#swift test
 
 .PHONY: clean
 clean:

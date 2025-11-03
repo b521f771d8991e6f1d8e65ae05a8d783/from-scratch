@@ -1,1 +1,12 @@
-{}
+{
+    "scripts": {
+        "build": "esbuild --bundle --sourcemap --minify typescript/main.ts --outfile=dist/bundle.js"
+    },
+    "devDependencies": {
+        "esbuild": "^0.25.12",
+        "ts-node": "^10.9.2"
+    },
+    "dependencies": {
+        "express": "^5.1.0"
+    }
+}
