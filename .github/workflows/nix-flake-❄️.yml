@@ -25,7 +25,7 @@ jobs:
       fi
 
    - name: Install Nix
-     if: steps.check_nix.outputs.present == 'false
+     if: steps.check_nix.outputs.present == 'false'
      uses: cachix/install-nix-action@v31
 
    - name: Build Nix Flake
