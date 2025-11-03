@@ -25,8 +25,8 @@ jobs:
       fi
 
    - name: Install Nix
-     if: steps.check_nix.outputs.present == 'false' && runner.os != 'Linux'
-     uses: cachix/install-nix-action@v25
+     if: steps.check_nix.outputs.present == 'false
+     uses: cachix/install-nix-action@v31
 
    - name: Build Nix Flake
      run: |
