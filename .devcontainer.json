@@ -9,6 +9,11 @@
 		"type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE}/.zsh_history,target=/root/.zsh_history",
 		"type=bind,source=${localEnv:HOME}${localEnv:USERPROFILE}/.zshrc,target=/root/.zshrc,readonly"
 	],
+	"features": {
+		"ghcr.io/b521f771d8991e6f1d8e65ae05a8d783/devcontainer-features/cargo-wasm-bindgen:latest": {
+			"version": "0.2.100"
+		}
+	},
 	"containerEnv": {
 		"HOSTNAME": "devcontainer",
 		"PROMPT": "%F{cyan}%n@%m %F{yellow}%1~%f %F{green}%(!.#.$)%f "
@@ -17,8 +22,6 @@
 		"--env-file",
 		"${localWorkspaceFolder}/.env"
 	],
-	"postCreateCommand": "cargo install wasm-bindgen-cli@0.2.100",
-	"initializeCommand": "touch ${localWorkspaceFolder}/.env",
 	"postAttachCommand": "make init", // download dependencies at startup, this is automatically executed in the right directory
 	"customizations": {
 		"vscode": {
@@ -36,14 +39,14 @@
 				"jock.svg",
 				"swiftlang.swift-vscode",
 				"bradlc.vscode-tailwindcss",
-                "ShahilKumar.docxreader",
+				"ShahilKumar.docxreader",
 				"ms-python.python",
 				"bbenoist.nix",
 				"continue.continue",
 				"github.vscode-codeql",
 				"wix.vscode-import-cost",
 				"humao.rest-client",
-                "tomoki1207.pdf"
+				"tomoki1207.pdf"
 			],
 			"settings": {
 				"[rust]": {

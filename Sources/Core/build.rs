@@ -37,7 +37,10 @@ fn build_swift() {
     run_command("swift", &["build"], "swift");
 }
 
-fn build_native() {}
+fn build_native() {
+    run_command("cmake", &["-S", ".", "-B", "../.cmake"], "native");
+    run_command("cmake", &["--build", ".cmake"], ".");
+}
 
 fn build_typescript() {}
 
