@@ -1,6 +1,7 @@
 name: Nix Flake ❄️
 on:
  workflow_dispatch:
+ push:
 
 jobs:
  tests:
