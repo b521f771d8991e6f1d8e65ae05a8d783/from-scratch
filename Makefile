@@ -69,13 +69,19 @@ all:
 	done
 	jq -s add .cmake/${SOURCES_DIR}/**/compile_commands.json  > .cmake/compile_commands.json
 
+	npx dotenvx run -- swift build --package-path Sources/Core/swift --configuration ${VARIANT}
 	npx dotenvx run -- cargo build ${CARGO_TARGET_FLAG} ${CARGO_VARIANT_FLAG} --features backend
-	# npx dotenvx run -- swift build --package-path Sources/Core/swift --configuration ${VARIANT}
 
 .PHONY: test
-test:
+test: all
 	npx dotenvx run -- ctest --test-dir .cmake
+	npx dotenvx run -- swift test --package-path Sources/Core/swift
 	npx dotenvx run -- cargo test
+	npx dotenvx run -- npm run test --workspaces
+
+.PHONY: lint
+lint: all
+	npx dotenvx run -- npm run lint --workspaces
 
 .PHONY: clean
 clean:

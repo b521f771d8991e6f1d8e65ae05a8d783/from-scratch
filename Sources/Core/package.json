@@ -1,10 +1,12 @@
 {
     "scripts": {
-        "build": "esbuild --bundle --sourcemap --minify typescript/main.ts --outfile=dist/bundle.js"
+        "build": "esbuild --bundle --sourcemap --minify typescript/main.ts --outfile=dist/bundle.js",
+        "test": "vitest --run"
     },
     "devDependencies": {
         "esbuild": "^0.25.12",
-        "ts-node": "^10.9.2"
+        "ts-node": "^10.9.2",
+        "vitest": "^4.0.7"
     },
     "dependencies": {
         "express": "^5.1.0"
