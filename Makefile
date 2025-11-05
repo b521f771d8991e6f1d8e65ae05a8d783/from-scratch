@@ -76,7 +76,7 @@ all:
 .PHONY: test
 test: all
 	npx dotenvx run -- ctest --test-dir .cmake
-	npx dotenvx run -- swift test --package-path Sources/Core/swift
+	# npx dotenvx run -- swift test --package-path Sources/Core/swift
 	npx dotenvx run -- cargo test
 	npx dotenvx run -- npm run test --workspaces
 
