@@ -63,8 +63,8 @@
 
           environment = {
             VARIANT = "release";
-            CC = "${pkgs.clang}/bin/clang";
-            CXX = "${pkgs.clang}/bin/clang++";
+            CC = if pkgs.stdenv.isLinux then "${pkgs.clang}/bin/clang" else "";
+            CXX = if pkgs.stdenv.isLinux then "${pkgs.clang}/bin/clang++" else "";
             OBJC = if pkgs.stdenv.isLinux then "${pkgs.clang}/bin/clang -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include" else "";
             OBJCXX = if pkgs.stdenv.isLinux then "${pkgs.clang}/bin/clang++ -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include" else "";
             LDFLAGS = if pkgs.stdenv.isLinux then "-L${pkgs.gnustep-libobjc}/lib" else "";
