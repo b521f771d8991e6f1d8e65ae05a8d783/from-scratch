@@ -2,7 +2,7 @@
 
 {
   inputs = {
-    nixpkgs.url = "github:b521f771d8991e6f1d8e65ae05a8d783/nixpkgs/stable";
+    nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:b521f771d8991e6f1d8e65ae05a8d783/flake-utils";
   };
 
@@ -48,41 +48,26 @@
               python3
             ]
             ++ lib.optionals pkgs.stdenv.isLinux [
-              swift
-              swiftpm
+              #swift
+              #swiftpm
+              gnustep-base
+              gnustep-make
+              gnustep-gui
+              gnustep-libobjc
               clang
-              gobjc
-              gnustep-base-gcc
-              gnustep-gui-gcc
-              gnustep-make-gcc
               pkg-config
             ]
             ++ lib.optionals stdenv.isDarwin [
-              apple-sdk # clang is included here
+              apple-sdk # clang and swift is included here
             ];
 
           environment = {
             VARIANT = "release";
-            CC = if pkgs.stdenv.isLinux then "${pkgs.gobjc}/bin/gcc" else "${pkgs.clang}/bin/clang";
-            CXX = if pkgs.stdenv.isLinux then "${pkgs.gobjc}/bin/g++" else "${pkgs.clang}/bin/clang++";
-            OBJC = if pkgs.stdenv.isLinux then "${pkgs.gobjc}/bin/gcc" else "${pkgs.clang}/bin/clang";
-            OBJCXX = if pkgs.stdenv.isLinux then "${pkgs.gobjc}/bin/g++" else "${pkgs.clang}/bin/clang";
-
-            OBJCFLAGS =
-              if pkgs.stdenv.isLinux then
-                "-isystem${pkgs.gnustep-gui-gcc}/include -isystem${pkgs.gnustep-base-gcc.dev}/include"
-              else
-                "";
-            OBJCXXFLAGS =
-              if pkgs.stdenv.isLinux then
-                "-isystem${pkgs.gnustep-gui-gcc}/include -isystem${pkgs.gnustep-base-gcc.dev}/include"
-              else
-                "";
-            LDFLAGS =
-              if pkgs.stdenv.isLinux then
-                "-L${pkgs.gnustep-gui-gcc}/lib -L${pkgs.gnustep-base-gcc.lib}/lib -lgnustep-gui -lgnustep-base -lm"
-              else
-                "";
+            CC = "${pkgs.clang}/bin/clang";
+            CXX = "${pkgs.clang}/bin/clang++";
+            OBJC = "${pkgs.clang}/bin/clang -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include";
+            OBJCXX = "${pkgs.clang}/bin/clang++ -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include";
+            LDFLAGS = "-L${pkgs.gnustep-libobjc}/lib";
 
             CPLUS_INCLUDE_PATH = if pkgs.stdenv.isDarwin then "${pkgs.libcxx.dev}/include/c++/v1" else "";
           };
@@ -96,19 +81,13 @@
             };
 
             env = environment;
+            HOME = "./home";
+
             npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
 
             nativeBuildInputs = global-packages ++ (with pkgs; [
               pkgs.importNpmLock.npmConfigHook
             ]);
-
-            buildInputs = with pkgs; [
-              # packages needed at runtime - those will be packaged in the docker image 
-              zsh
-              nodejs
-            ];
-
-            HOME = "./home";
 
             buildPhase = ''
               mkdir -p ${backend.HOME}
