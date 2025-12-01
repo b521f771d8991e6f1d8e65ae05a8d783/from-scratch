@@ -61,28 +61,6 @@
               apple-sdk # clang is included here
             ];
 
-          npm-deps = pkgs.buildNpmPackage {
-            # used only to create the node_modules folder
-            name = "npm-deps";
-            src = ./.;
-
-            npmDeps = pkgs.importNpmLock {
-              npmRoot = ./.;
-            };
-
-            npmConfigHook = pkgs.importNpmLock.npmConfigHook;
-
-            buildPhase = ":";
-
-            installPhase = ''
-              mkdir -p $out
-              cp -r node_modules $out
-            '';
-
-            fixupPhase = ":";
-            checkPhase = ":";
-          };
-
           environment = {
             VARIANT = "release";
             CC = if pkgs.stdenv.isLinux then "${pkgs.gobjc}/bin/gcc" else "${pkgs.clang}/bin/clang";
@@ -118,13 +96,22 @@
             };
 
             env = environment;
-            nativeBuildInputs = global-packages;
+            npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
+
+            nativeBuildInputs = global-packages ++ (with pkgs; [
+              pkgs.importNpmLock.npmConfigHook
+            ]);
+
+            buildInputs = with pkgs; [
+              # packages needed at runtime - those will be packaged in the docker image 
+              zsh
+              nodejs
+            ];
+
             HOME = "./home";
 
             buildPhase = ''
-              mkdir -p ${backend.HOME}            
-              cp -r ${npm-deps}/node_modules .
-              chmod -R 777 node_modules # to prevent Error: EACCES: permission denied, mkdir '/build/s4bnqnz1prnhv383fpn2hqm29m7ifn3g-source/node_modules/react-native-css-interop/.cache'
+              mkdir -p ${backend.HOME}
               make all
             '';
 
