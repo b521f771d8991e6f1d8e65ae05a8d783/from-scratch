@@ -65,9 +65,9 @@
             VARIANT = "release";
             CC = "${pkgs.clang}/bin/clang";
             CXX = "${pkgs.clang}/bin/clang++";
-            OBJC = "${pkgs.clang}/bin/clang -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include";
-            OBJCXX = "${pkgs.clang}/bin/clang++ -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include";
-            LDFLAGS = "-L${pkgs.gnustep-libobjc}/lib";
+            OBJC = if pkgs.stdenv.isLinux then "${pkgs.clang}/bin/clang -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include" else "";
+            OBJCXX = if pkgs.stdenv.isLinux then "${pkgs.clang}/bin/clang++ -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include" else "";
+            LDFLAGS = if pkgs.stdenv.isLinux then "-L${pkgs.gnustep-libobjc}/lib" else "";
 
             CPLUS_INCLUDE_PATH = if pkgs.stdenv.isDarwin then "${pkgs.libcxx.dev}/include/c++/v1" else "";
           };
