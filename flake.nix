@@ -64,13 +64,13 @@
           environment = {
             VARIANT = "release";
             CC = if pkgs.stdenv.isLinux then "${pkgs.clang}/bin/clang" else "";
-            CXX = if pkgs.stdenv.isLinux then "${pkgs.clang}/bin/clang++" else ";
+            CXX = if pkgs.stdenv.isLinux then "${pkgs.clang}/bin/clang++" else "";
             OBJC = if pkgs.stdenv.isLinux then
               "${pkgs.clang}/bin/clang -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include"
               else "";
             OBJCXX = if pkgs.stdenv.isLinux then
-                "${pkgs.clang}/bin/clang++ -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include"
-                else "";
+              "${pkgs.clang}/bin/clang++ -isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include"
+              else "";
           };
 
           backend = pkgs.rustPlatform.buildRustPackage {
