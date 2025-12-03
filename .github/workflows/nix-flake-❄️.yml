@@ -8,6 +8,7 @@ jobs:
   permissions:
    contents: read
    packages: write
+   actions: write
   strategy:
    matrix:
     os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
@@ -25,9 +26,12 @@ jobs:
         echo "present=false" >> $GITHUB_OUTPUT
       fi
 
-   - name: Install Nix
+   - uses: nixbuild/nix-quick-install-action@v34
      if: steps.check_nix.outputs.present == 'false'
-     uses: cachix/install-nix-action@v31
+     with:
+       nix_conf: |
+         keep-env-derivations = true
+         keep-outputs = true
      
    - name: Restore and save Nix store
      uses: nix-community/cache-nix-action@v6
