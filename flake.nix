@@ -89,6 +89,7 @@
           backend = pkgs.rustPlatform.buildRustPackage {
             name = "backend";
             src = ./.;
+            stdenv = pkgs.clangStdenv;
 
             cargoLock = {
               lockFile = ./Cargo.lock;
