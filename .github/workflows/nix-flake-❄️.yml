@@ -95,7 +95,7 @@ jobs:
     - name: Create manifest list and push
       working-directory: ${{ runner.temp }}/digests
       run: |
-        BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD) docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+        docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
           $(printf '${{ github.repository }}:@sha256:%s ' *)
 
     - name: Inspect image
