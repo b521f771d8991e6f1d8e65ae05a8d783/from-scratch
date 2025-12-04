@@ -4,12 +4,7 @@ on:
  push:
 
 jobs:
- build-mobile:
-  runs-on: [macos-latest]
-  steps:
-   - uses: actions/checkout@main
  build:
-  needs: build-mobile
   permissions:
    contents: read
    packages: write
@@ -36,6 +31,7 @@ jobs:
        flakehub: false
      
    - uses: DeterminateSystems/magic-nix-cache-action@main
+     if: false
      with:
        use-flakehub: false
 
@@ -57,7 +53,7 @@ jobs:
      uses: actions/upload-artifact@main
      if: runner.os == 'Linux'
      with:
-      name: backend-${{ env.PLATFORM_PAIR }}
+      name: backend-${{ runner.os }}-${{ runner.arch }}
       path: ${{ runner.temp }}/digests/*
       if-no-files-found: error
       retention-days: 1
