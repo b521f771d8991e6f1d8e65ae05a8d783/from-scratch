@@ -6,6 +6,8 @@ on:
 jobs:
  build-mobile:
   runs-on: [macos-latest]
+  steps:
+   - uses: actions/checkout@main
  build:
   needs: build-mobile
   permissions:
