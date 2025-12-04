@@ -90,7 +90,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ github.repository }}:${{ steps.meta-info.outputs.branch }}
+        images: ${{ github.repository }}
         tags: |
           type=ref,event=branch
           type=ref,event=pr
