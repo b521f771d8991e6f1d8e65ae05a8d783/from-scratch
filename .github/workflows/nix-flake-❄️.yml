@@ -4,7 +4,7 @@ on:
  push:
 
 jobs:
- tests:
+ build:
   permissions:
    contents: read
    packages: write
@@ -39,9 +39,26 @@ jobs:
       nix --extra-experimental-features "flakes nix-command" flake check
       nix --extra-experimental-features "flakes nix-command" build . -L --show-trace
 
-   - name: Build and Push Docker Image
+   - name: Load docker image
      if: runner.os == 'Linux'
-     run: |
-      # Build the Docker image
-      nix --extra-experimental-features "flakes nix-command" build .#docker-image -L --show-trace
-      nix --extra-experimental-features "flakes nix-command" run nixpkgs#skopeo -- copy -a docker-archive:./result docker://ghcr.io/${{ github.repository }}:$(git rev-parse --abbrev-ref HEAD) --dest-creds=${{ github.actor }}:${{ github.token }}
+     run: nix --extra-experimental-features "flakes nix-command" build .#docker-image -L --show-trace && docker load < ./result
+   
+   - name: Upload artifact
+     uses: actions/upload-artifact@main
+     if: runner.os == 'Linux'
+     with:
+      name: backend
+      path: ${{ runner.temp }}/backend.tar
+
+ publish:
+  runs-on: [ubuntu-latest]
+  steps:
+   - name: Download artifact
+     uses: actions/download-artifact@main
+     with:
+       name: backend
+       path: ${{ runner.temp }}
+  
+   #- name: Build and Push Docker Image
+   #  run: |
+   #   nix --extra-experimental-features "flakes nix-command" run nixpkgs#skopeo -- copy -a docker-archive:./result docker://ghcr.io/${{ github.repository }}:$(git rev-parse --abbrev-ref HEAD) --dest-creds=${{ github.actor }}:${{ github.token }}
