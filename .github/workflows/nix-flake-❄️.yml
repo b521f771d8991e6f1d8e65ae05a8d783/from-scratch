@@ -29,6 +29,8 @@ jobs:
      if: steps.check_nix.outputs.present == 'false'
      
    - uses: DeterminateSystems/magic-nix-cache-action@main
+     with:
+       use-flakehub: false
 
    - name: Build Nix Flake
      run: |
