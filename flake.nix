@@ -55,7 +55,6 @@
               gnustep-gui
               gnustep-libobjc
               clang
-              pkg-config
             ]
             ++ lib.optionals stdenv.isDarwin [
               apple-sdk # clang and swift is included here
@@ -72,11 +71,12 @@
             OBJC = if pkgs.stdenv.isLinux
               then "${pkgs.clang}/bin/clang"
               else "";
-            OBJCFLAGS = if pkgs.stdenv.isLinux
-              then "-isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include"
-              else "";
             OBJCXX = if pkgs.stdenv.isLinux
               then "${pkgs.clang}/bin/clang++"
+              else "";
+
+            OBJCFLAGS = if pkgs.stdenv.isLinux
+              then "-isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include"
               else "";
             OBJCXXFLAGS = if pkgs.stdenv.isLinux
               then "-isystem${pkgs.gnustep-gui}/include -isystem${pkgs.gnustep-base.dev}/include -isystem${pkgs.gnustep-libobjc}/include"
