@@ -46,7 +46,7 @@ jobs:
        nix --extra-experimental-features "flakes nix-command" build .#docker-image -L --show-trace
        nix --extra-experimental-features "flakes nix-command" run nixpkgs#skopeo -- copy -a docker-archive:./result docker://ghcr.io/${{ github.repository }}:$(git rev-parse --abbrev-ref HEAD)-${{ runner.arch }} --dest-creds=${{ github.actor }}:${{ github.token }}
        mkdir -p ${{ runner.temp }}/digests
-       digest=$(nix --extra-experimental-features "flakes nix-command" run nixpkgs#skopeo inspect docker://ghcr.io/${{ env.REGISTRY_IMAGE }}:$(git rev-parse --abbrev-ref HEAD)-${{ runner.arch }} | jq -r .Digest)
+       digest=$(nix --extra-experimental-features "flakes nix-command" run nixpkgs#skopeo inspect docker://ghcr.io/${{ github.repository }}:$(git rev-parse --abbrev-ref HEAD)-${{ runner.arch }} | jq -r .Digest)
        touch "${{ runner.temp }}/digests/${digest#sha256:}"
    
    - name: Upload artifact
@@ -55,6 +55,15 @@ jobs:
      with:
       name: digests-${{ runner.os }}-${{ runner.arch }}
       path: ${{ runner.temp }}/digests/*
+      if-no-files-found: error
+      retention-days: 1
+
+   - name: Upload artifact
+     uses: actions/upload-artifact@main
+     if: runner.os == 'macOS'
+     with:
+      name: digests-${{ runner.os }}-${{ runner.arch }}
+      path: result
       if-no-files-found: error
       retention-days: 1
 
@@ -76,7 +85,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY_IMAGE }}
+        images: ${{ github.repository }}:$(git rev-parse --abbrev-ref HEAD)
         tags: |
           type=ref,event=branch
           type=ref,event=pr
