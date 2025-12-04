@@ -39,27 +39,55 @@ jobs:
       nix --extra-experimental-features "flakes nix-command" flake check
       nix --extra-experimental-features "flakes nix-command" build . -L --show-trace
 
-   - name: Load docker image
+   - name: Publish
      if: runner.os == 'Linux'
-     run: nix --extra-experimental-features "flakes nix-command" build .#docker-image -L --show-trace && docker load < ./result
+     run: |
+       nix --extra-experimental-features "flakes nix-command" build .#docker-image -L --show-trace
+       nix --extra-experimental-features "flakes nix-command" run nixpkgs#skopeo -- copy -a docker-archive:./result docker://ghcr.io/${{ github.repository }}:$(git rev-parse --abbrev-ref HEAD)-${{ runner.arch }} --dest-creds=${{ github.actor }}:${{ github.token }}
+       mkdir -p ${{ runner.temp }}/digests
+       digest=$(nix --extra-experimental-features "flakes nix-command" run nixpkgs#skopeo inspect docker://ghcr.io/${{ github.repository }}:$(git rev-parse --abbrev-ref HEAD)-${{ runner.arch }})
+       touch "${{ runner.temp }}/digests/${digest#sha256:}"
    
    - name: Upload artifact
      uses: actions/upload-artifact@main
      if: runner.os == 'Linux'
      with:
-      name: backend
-      path: ${{ runner.temp }}/backend.tar
+      name: backend-${{ env.PLATFORM_PAIR }}
+      path: ${{ runner.temp }}/digests/*
+      if-no-files-found: error
+      retention-days: 1
 
  publish:
   runs-on: [ubuntu-latest]
   needs: build
   steps:
-   - name: Download artifact
-     uses: actions/download-artifact@main
-     with:
-       name: backend
-       path: ${{ runner.temp }}
-  
-   #- name: Build and Push Docker Image
-   #  run: |
-   #   nix --extra-experimental-features "flakes nix-command" run nixpkgs#skopeo -- copy -a docker-archive:./result docker://ghcr.io/${{ github.repository }}:$(git rev-parse --abbrev-ref HEAD) --dest-creds=${{ github.actor }}:${{ github.token }}
+    - name: Download digests
+      uses: actions/download-artifact@main
+      with:
+        path: ${{ runner.temp }}/digests
+        pattern: digests-*
+        merge-multiple: true
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@main
+
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@main
+      with:
+        images: ${{ env.REGISTRY_IMAGE }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+
+    - name: Create manifest list and push
+      working-directory: ${{ runner.temp }}/digests
+      run: |
+        docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+          $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
+
+    - name: Inspect image
+      run: |
+        docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
