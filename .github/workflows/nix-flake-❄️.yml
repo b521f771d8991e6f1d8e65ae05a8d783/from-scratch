@@ -2,7 +2,8 @@ name: Nix Flake ❄️
 on:
  workflow_dispatch:
  push:
-# no need for periodic rebuilds since nix is already reproducible
+ schedule:
+   - cron: '0 0 * * 1'
 
 jobs:
  build:
