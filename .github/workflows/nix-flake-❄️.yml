@@ -42,6 +42,13 @@ jobs:
       nix --extra-experimental-features "flakes nix-command" flake check
       nix --extra-experimental-features "flakes nix-command" build . -L --show-trace
 
+   - name: Upload artifact
+     uses: actions/upload-artifact@main
+     with:
+      name: digests-${{ runner.os }}-${{ runner.arch }}
+      path: result
+      if-no-files-found: error
+
    - name: Publish
      if: runner.os == 'Linux'
      run: |
@@ -50,12 +57,3 @@ jobs:
        mkdir -p ${{ runner.temp }}/digests
        digest=$(nix --extra-experimental-features "flakes nix-command" run nixpkgs#skopeo inspect docker://ghcr.io/${{ github.repository }}:$(git rev-parse --abbrev-ref HEAD)-${{ runner.arch }} | jq -r .Digest)
        touch "${{ runner.temp }}/digests/${digest#sha256:}"
-
-   - name: Upload artifact
-     uses: actions/upload-artifact@main
-     if: runner.os == 'macOS'
-     with:
-      name: digests-${{ runner.os }}-${{ runner.arch }}
-      path: result
-      if-no-files-found: error
-      retention-days: 1
