@@ -2,6 +2,7 @@ name: Nix Flake ❄️
 on:
  workflow_dispatch:
  push:
+# no need for periodic rebuilds since nix is already reproducible
 
 jobs:
  build:
@@ -48,15 +49,6 @@ jobs:
        mkdir -p ${{ runner.temp }}/digests
        digest=$(nix --extra-experimental-features "flakes nix-command" run nixpkgs#skopeo inspect docker://ghcr.io/${{ github.repository }}:$(git rev-parse --abbrev-ref HEAD)-${{ runner.arch }} | jq -r .Digest)
        touch "${{ runner.temp }}/digests/${digest#sha256:}"
-   
-   - name: Upload artifact
-     uses: actions/upload-artifact@main
-     if: runner.os == 'Linux'
-     with:
-      name: digests-${{ runner.os }}-${{ runner.arch }}
-      path: ${{ runner.temp }}/digests/*
-      if-no-files-found: error
-      retention-days: 1
 
    - name: Upload artifact
      uses: actions/upload-artifact@main
@@ -66,43 +58,3 @@ jobs:
       path: result
       if-no-files-found: error
       retention-days: 1
-
- publish:
-  runs-on: [ubuntu-latest]
-  needs: build
-  steps:
-    - uses: actions/checkout@main
-    - uses: docker/setup-buildx-action@v3
-
-    - name: Check for nix
-      id: meta-info
-      run: |
-       echo branch=$(git rev-parse --abbrev-ref HEAD) >>  $GITHUB_OUTPUT
-    
-    - name: Download digests
-      uses: actions/download-artifact@main
-      with:
-        path: ${{ runner.temp }}/digests
-        pattern: digests-*
-        merge-multiple: true
-
-    - name: Docker meta
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ github.repository }}
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-
-    - name: Create manifest list and push
-      working-directory: ${{ runner.temp }}/digests
-      run: |
-        docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-          $(printf '${{ github.repository }}:${{ steps.meta-info.outputs.branch }}@sha256:%s ' *)
-
-    - name: Inspect image
-      run: |
-        docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
