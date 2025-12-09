@@ -41,12 +41,14 @@ jobs:
      run: |
       nix --extra-experimental-features "flakes nix-command" flake check
       nix --extra-experimental-features "flakes nix-command" build . -L --show-trace
+      mkdir ${{ runner.temp }}/result
+      nix --extra-experimental-features "flakes nix-command" copy --to ${{ runner.temp }}/result
 
    - name: Upload artifact
      uses: actions/upload-artifact@main
      with:
       name: digests-${{ runner.os }}-${{ runner.arch }}
-      path: result
+      path: ${{ runner.temp }}/result
       if-no-files-found: error
 
    - name: Publish
