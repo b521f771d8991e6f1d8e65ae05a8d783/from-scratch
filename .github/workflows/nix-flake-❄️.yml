@@ -27,6 +27,10 @@ jobs:
         echo "NIX_PRESENT=false" >> $GITHUB_ENV
         echo "present=false" >> $GITHUB_OUTPUT
       fi
+
+   - uses: DeterminateSystems/flake-checker-action@main
+     with:
+       fail-mode: false
   
    - uses: DeterminateSystems/nix-installer-action@main
      if: steps.check_nix.outputs.present == 'false'
